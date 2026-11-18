@@ -396,7 +396,7 @@
       </div>
 
       <article class="projet" data-t="python mines">
-        <a class="visuel" href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml"><img src="assets/forages.jpg" alt="Comparaison du R² des quatre méthodes d'estimation" loading="lazy" width="1200" height="552"></a>
+        <a class="visuel" href="projets/gisement-fer/"><img src="assets/forages.jpg" alt="Comparaison du R² des quatre méthodes d'estimation" loading="lazy" width="1200" height="552"></a>
         <div class="corps">
           <div class="tags"><span class="tag mines">Mines</span><span class="tag">Python</span><span class="tag">Machine learning</span><span class="tag">Géostatistique</span><span class="tag">JORC 2012</span></div>
           <h3>Estimer un gisement de fer à partir de 30 forages</h3>
@@ -405,13 +405,13 @@
             <h4>La chaîne de traitement des données</h4>
             <ol>
               <li>Base de forage<small>4 tables, 30 forages, 3&nbsp;630&nbsp;m</small></li>
-              <li>Contrôle qualité<small>2&nbsp;705 → 2&nbsp;702 analyses XRF</small></li>
+              <li>Contrôle qualité<small>6 anomalies traitées, 2&nbsp;702 analyses valides</small></li>
               <li>Analyse exploratoire<small>statistiques par domaine</small></li>
               <li>Modèle 3D<small>3 domaines, Leapfrog</small></li>
-              <li>Écrêtage et compositage<small>P01-P99, 1&nbsp;818 composites de 2&nbsp;m</small></li>
+              <li>Écrêtage et compositage<small>3 méthodes comparées, P01-P99 ; 1&nbsp;818 composites de 2&nbsp;m</small></li>
               <li>Variographie<small>par domaine, Isatis.neo</small></li>
               <li>Estimation<small>krigeage, RF, XGBoost, stacking</small></li>
-              <li>Validation<small>forages tenus à l'écart</small></li>
+              <li>Validation<small>test indépendant de 20 %, 5 plis</small></li>
               <li>Classification<small>JORC 2012, Surpac</small></li>
             </ol>
             <p class="leg">Étapes 1 à 6 : préparation des données. Étapes 7 à 9 : estimation et classification.</p>
@@ -420,20 +420,20 @@
             <div><h4>La question</h4><p>Le krigeage lisse les teneurs et sous-estime le minerai riche. Le machine learning fait-il mieux là où personne n'a foré ?</p></div>
             <div><h4>Ce que j'ai construit</h4><ul class="coches">
               <li><svg class="ic"><use href="#i-ok"/></svg>Base de forage contrôlée et préparée, modèle 3D à 3 domaines</li>
-              <li><svg class="ic"><use href="#i-ok"/></svg>Krigeage, Random Forest, XGBoost et stacking, validés sur des forages tenus à l'écart</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Krigeage, Random Forest, XGBoost et stacking, comparés sur un jeu de test indépendant</li>
               <li><svg class="ic"><use href="#i-ok"/></svg>Classification des ressources JORC 2012</li></ul></div>
             <div><h4>Ce que montrent les données</h4><ul class="coches">
               <li><svg class="ic"><use href="#i-ok"/></svg>Le stacking porte le R² de 0,606 à 0,825</li>
-              <li><svg class="ic"><use href="#i-ok"/></svg>La silice est la variable qui pilote la teneur en fer</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Une seule valeur aberrante masquait la relation fer-silice (r de −0,05 à −0,70)</li>
               <li><svg class="ic"><use href="#i-ok"/></svg>58,2 Mt classées en Mesurée + Indiquée</li></ul></div>
           </div>
           <div class="kpis">
             <div class="kpi"><b class="fort">0,825</b><span>R² du stacking (krigeage : 0,606)</span></div>
-            <div class="kpi"><b>3,54 %</b><span>erreur moyenne (RMSE) en Fe</span></div>
+            <div class="kpi"><b>−34 %</b><span>d'erreur (RMSE) par rapport au krigeage</span></div>
             <div class="kpi"><b>102,1 Mt</b><span>de ressources estimées</span></div>
             <div class="kpi"><b>31,4 %</b><span>teneur moyenne en fer</span></div>
           </div>
-          <div class="liens"><a class="btn btn-creux btn-petit" href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml"><svg class="ic"><use href="#i-code"/></svg>Lire l'étude et le code</a></div>
+          <div class="liens"><a class="btn btn-plein btn-petit" href="projets/gisement-fer/"><svg class="ic"><use href="#i-tdb"/></svg>Lire l'étude détaillée</a><a class="btn btn-creux btn-petit" href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml"><svg class="ic"><use href="#i-code"/></svg>Code de démonstration</a></div>
         </div>
       </article>
 

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estimation d'un gisement de fer : étude détaillée</title>
+<meta name="description" content="Étude de cas complète : de la base de 30 forages à l'inventaire JORC 2012. Contrôle qualité, valeurs aberrantes, compositage, variographie, krigeage, machine learning et classification.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2212%22 fill=%22%239c3f28%22/%3E%3Ctext x=%2232%22 y=%2242%22 font-family=%22Arial%22 font-weight=%22700%22 font-size=%2226%22 fill=%22white%22 text-anchor=%22middle%22%3EEN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --fond: #f1f0ec; --carte: #fbfaf7; --fond-2: #e8e6e0;
+    --encre: #231f1b; --encre-2: #57514a; --encre-3: #7b746b; --trait: #dcd8cf;
+    --ocre: #9a6a1f; --ocre-pale: #f2e6cf; --rouille: #9c3f28; --olive: #5a6a2a; --olive-pale: #e6ebd5;
+    --gris: #9a948b; --sable: #d9b97f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --fond: #1a1714; --carte: #221e1a; --fond-2: #2b2621; --encre: #eee9e1; --encre-2: #c4bcb1; --encre-3: #978f84;
+      --trait: #3a342e; --ocre: #d7a24e; --ocre-pale: #3a2f1e; --rouille: #d0674a; --olive: #a9b86a; --olive-pale: #2c3020;
+      --gris: #7d776f; --sable: #a88a52;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --fond: #1a1714; --carte: #221e1a; --fond-2: #2b2621; --encre: #eee9e1; --encre-2: #c4bcb1; --encre-3: #978f84;
+    --trait: #3a342e; --ocre: #d7a24e; --ocre-pale: #3a2f1e; --rouille: #d0674a; --olive: #a9b86a; --olive-pale: #2c3020;
+    --gris: #7d776f; --sable: #a88a52;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--fond); color: var(--encre); font-family: "Archivo", system-ui, sans-serif; font-size: 16.5px; line-height: 1.62; }
+  a { color: inherit; text-decoration-color: var(--ocre); text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--ocre); outline-offset: 3px; }
+  .entete { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--fond) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--trait); }
+  .entete .in { max-width: 1120px; margin: 0 auto; padding: 0 24px; height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .retour { text-decoration: none; font-weight: 600; font-size: 15px; display: inline-flex; gap: 8px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-family: inherit; font-weight: 600; font-size: 15px; text-decoration: none; background: var(--rouille); color: #fff; }
+  .page { max-width: 1120px; margin: 0 auto; padding: 0 24px 72px; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 48px; }
+  .sommaire { position: sticky; top: 86px; align-self: start; padding-top: 44px; font-size: 14px; }
+  .sommaire p { font-weight: 650; margin: 0 0 8px; color: var(--encre-3); font-size: 13px; }
+  .sommaire ol { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  .sommaire li { counter-increment: s; }
+  .sommaire a { display: block; padding: 5px 0 5px 12px; border-left: 2px solid var(--trait); text-decoration: none; color: var(--encre-2); }
+  .sommaire a::before { content: counter(s) ". "; color: var(--ocre); font-weight: 600; }
+  .sommaire a:hover { color: var(--encre); border-left-color: var(--ocre); }
+  main { min-width: 0; padding-top: 44px; }
+  .domaine { color: var(--ocre); font-weight: 600; font-size: 15px; margin: 0 0 8px; }
+  h1 { font-size: clamp(2.1rem, 4.4vw, 3.4rem); line-height: 1.04; margin: 0 0 16px; font-weight: 800; font-variation-settings: "wdth" 114; letter-spacing: -0.03em; }
+  .lead { font-size: 1.15rem; color: var(--encre-2); max-width: 62ch; margin: 0 0 24px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0 0 18px; }
+  .kpi { background: var(--carte); border: 1px solid var(--trait); border-radius: 12px; padding: 14px 16px; }
+  .kpi b { display: block; font-size: 1.6rem; line-height: 1.1; font-weight: 800; font-variation-settings: "wdth" 115; font-variant-numeric: tabular-nums; }
+  .kpi b.fort { color: var(--rouille); }
+  .kpi span { display: block; font-size: 13px; color: var(--encre-2); margin-top: 4px; line-height: 1.35; }
+  .note-conf { font-size: 14px; color: var(--encre-2); background: var(--ocre-pale); border-radius: 10px; padding: 12px 16px; margin: 0; }
+  section { padding-top: 56px; }
+  h2 { font-size: clamp(1.45rem, 2.6vw, 1.95rem); line-height: 1.15; margin: 0 0 6px; font-weight: 760; font-variation-settings: "wdth" 112; letter-spacing: -0.02em; }
+  .etape { font-size: 13.5px; color: var(--ocre); font-weight: 650; margin: 0 0 4px; }
+  section > p { color: var(--encre-2); max-width: 68ch; }
+  .retenir { border-left: 3px solid var(--rouille); background: var(--carte); padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 18px 0; max-width: 68ch; }
+  .retenir b { color: var(--encre); }
+  .tableau { overflow-x: auto; background: var(--carte); border: 1px solid var(--trait); border-radius: 12px; margin: 16px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+  caption { text-align: left; padding: 12px 16px 4px; font-size: 13.5px; font-weight: 650; color: var(--encre-3); }
+  th, td { padding: 9px 16px; text-align: right; border-top: 1px solid var(--trait); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { font-size: 13px; color: var(--encre-3); font-weight: 600; border-top: 0; }
+  tr.fort td { font-weight: 700; }
+  table.texte th, table.texte td { text-align: left; }
+  td.ok { color: var(--olive); font-weight: 600; }
+  td.corr { color: var(--ocre); font-weight: 600; }
+  .graph { background: var(--carte); border: 1px solid var(--trait); border-radius: 12px; padding: 16px 18px 10px; margin: 16px 0; }
+  .graph h3 { margin: 0 0 2px; font-size: 15px; }
+  .graph p { margin: 0 0 8px; font-size: 13px; color: var(--encre-3); }
+  .zone { position: relative; height: 290px; }
+  .deux { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .legende { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--encre-2); margin: 4px 0 6px; }
+  .legende i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  ul.liste { padding-left: 20px; color: var(--encre-2); max-width: 68ch; }
+  ul.liste li { margin-bottom: 6px; }
+  .pied { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--trait); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; font-size: 14px; color: var(--encre-3); }
+  @media (max-width: 900px) {
+    .page { grid-template-columns: 1fr; gap: 0; }
+    .sommaire { display: none; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .deux { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) { .page, .entete .in { padding-left: 16px; padding-right: 16px; } th, td { padding: 8px 10px; } }
+</style>
+</head>
+<body>
+<header class="entete">
+  <div class="in">
+    <a class="retour" href="../../#projets">← Retour au portfolio</a>
+    <a class="btn" href="https://wa.me/237679617770?text=Bonjour%20Emmanuel%2C%20j%27ai%20lu%20votre%20%C3%A9tude%20sur%20le%20gisement%20de%20fer." target="_blank" rel="noopener">Discuter d'un projet</a>
+  </div>
+</header>
+
+<div class="page">
+  <nav class="sommaire" aria-label="Sommaire">
+    <p>Sommaire</p>
+    <ol>
+      <li><a href="#donnees">La base de forage</a></li>
+      <li><a href="#qaqc">Contrôle qualité</a></li>
+      <li><a href="#aberrantes">Valeurs aberrantes</a></li>
+      <li><a href="#compositage">Compositage</a></li>
+      <li><a href="#eda">Analyse exploratoire</a></li>
+      <li><a href="#modele">Modèle 3D et variographie</a></li>
+      <li><a href="#krigeage">Krigeage ordinaire</a></li>
+      <li><a href="#ml">Machine learning</a></li>
+      <li><a href="#comparaison">Comparaison</a></li>
+      <li><a href="#jorc">Classification JORC</a></li>
+      <li><a href="#limites">Limites</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <p class="domaine">Mines, estimation de ressources</p>
+    <h1>De 30 forages à un inventaire JORC : la chaîne complète</h1>
+    <p class="lead">Mémoire d'ingénieur réalisé chez MuCoTech SARL en 2026 sur un gisement de fer rubané (BIF) du Sud-Cameroun. Question posée : le machine learning peut-il rendre plus fiable l'estimation des teneurs que le krigeage ordinaire, méthode de référence de l'industrie ?</p>
+    <div class="kpis">
+      <div class="kpi"><b class="fort">0,825</b><span>R² du stacking sur le jeu de test (krigeage : 0,606)</span></div>
+      <div class="kpi"><b>−34 %</b><span>d'erreur de prédiction (RMSE) par rapport au krigeage</span></div>
+      <div class="kpi"><b>102,1 Mt</b><span>à 31,4 % Fe, coupure 25 % Fe</span></div>
+      <div class="kpi"><b>58,2 Mt</b><span>en Mesurée + Indiquée, niveau d'une préfaisabilité</span></div>
+    </div>
+    <p class="note-conf">Les données de forage appartiennent à un tiers et ne sont pas publiées. Tous les chiffres de cette page sont tirés du mémoire ; le code de démonstration, sur données synthétiques, est sur <a href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml">GitHub</a>.</p>
+
+    <section id="donnees">
+      <p class="etape">Étape 1</p>
+      <h2>La base de forage</h2>
+      <p>Quatre tables relationnelles, livrées par le laboratoire et l'équipe de terrain : positions des forages (Collar), déviations (Survey), descriptions géologiques (Geology) et analyses chimiques (Assay, laboratoire ALS, méthode XRF accréditée ISO/IEC 17025).</p>
+      <div class="tableau"><table class="texte">
+        <thead><tr><th>Table</th><th>Contenu</th><th>Volume</th></tr></thead>
+        <tbody>
+          <tr><td>Collar</td><td>Coordonnées, altitude, profondeur</td><td>30 forages, 75 à 199,5 m (moy. 121 m)</td></tr>
+          <tr><td>Survey</td><td>Pendage et azimut par station</td><td>30 forages</td></tr>
+          <tr><td>Geology</td><td>Intervalles lithologiques</td><td>736 intervalles, 22 codes</td></tr>
+          <tr><td>Assay</td><td>Fe, SiO₂, Al₂O₃, P par intervalle</td><td>2 705 analyses</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="qaqc">
+      <p class="etape">Étape 2</p>
+      <h2>Contrôle qualité : vérifier avant de calculer</h2>
+      <p>Chaque table a été contrôlée : unicité des identifiants, valeurs manquantes, bornes d'intervalles, cohérence entre tables et plages de valeurs physiquement possibles.</p>
+      <div class="tableau"><table class="texte">
+        <caption>Synthèse du contrôle qualité</caption>
+        <thead><tr><th>Table</th><th>Vérification</th><th>Anomalies</th><th>Traitement</th></tr></thead>
+        <tbody>
+          <tr><td>Collar</td><td>Doublons, valeurs manquantes, profondeurs négatives</td><td>0</td><td class="ok">Conforme</td></tr>
+          <tr><td>Survey</td><td>Forages absents de Collar, valeurs manquantes</td><td>0</td><td class="ok">Conforme</td></tr>
+          <tr><td>Geology</td><td>Intervalles inversés, dépassement de profondeur</td><td>0</td><td class="ok">Conforme</td></tr>
+          <tr><td>Assay</td><td>Teneurs en Fe manquantes</td><td>2</td><td class="corr">Exclues</td></tr>
+          <tr><td>Assay</td><td>Borne de début manquante</td><td>1</td><td class="corr">Corrigée</td></tr>
+          <tr><td>Assay</td><td>Intervalles inversés</td><td>2</td><td class="corr">Corrigés</td></tr>
+          <tr><td>Assay</td><td>SiO₂ = 7 754 % (impossible)</td><td>1</td><td class="corr">Isolée</td></tr>
+        </tbody>
+      </table></div>
+      <div class="retenir"><b>Résultat :</b> 2 705 analyses ramenées à 2 702 exploitables, soit plus de 99,9 % de données valides. Les intervalles défectueux ont été corrigés par interpolation à partir des intervalles voisins.</div>
+    </section>
+
+    <section id="aberrantes">
+      <p class="etape">Étape 3</p>
+      <h2>Valeurs aberrantes : choisir le seuil, pas le subir</h2>
+      <p>Les teneurs extrêmes d'un gisement de BIF peuvent être réelles (enrichissement supergène) ou fausser l'estimation en se propageant trop loin. J'ai comparé trois méthodes de détection avant d'en retenir une.</p>
+      <div class="tableau"><table>
+        <caption>Détection des valeurs aberrantes du fer</caption>
+        <thead><tr><th>Méthode</th><th>Seuil bas</th><th>Seuil haut</th><th>Valeurs détectées</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>Écart interquartile (1,5 × IQR)</td><td>0,06 %</td><td>64,76 %</td><td>0</td><td>Trop permissive</td></tr>
+          <tr class="fort"><td>Percentiles P01-P99</td><td>19,26 %</td><td>53,45 %</td><td>54 (2,0 %)</td><td>Retenue</td></tr>
+          <tr><td>Percentiles P05-P95</td><td>20,76 %</td><td>49,31 %</td><td>272 (10,1 %)</td><td>Trop restrictive</td></tr>
+        </tbody>
+      </table></div>
+      <div class="retenir"><b>Impact contrôlé :</b> après écrêtage, la moyenne du fer ne bouge que de −0,05 % en relatif et la médiane reste à 33,78 %. Seules les extrémités changent (minimum de 15,00 à 19,26 %, maximum de 59,09 à 53,45 %).</div>
+    </section>
+
+    <section id="compositage">
+      <p class="etape">Étape 4</p>
+      <h2>Compositage : un support commun à 2 m</h2>
+      <p>Les échantillons mesuraient de 0,30 à 4,00 m (médiane 1,00 m). Pour que les statistiques comparent des volumes comparables, ils ont été regroupés en composites de 2 m, pondérés par la longueur, sans jamais franchir un contact géologique. Les reliquats de fin de forage de moins de 1 m ont été exclus.</p>
+      <div class="tableau"><table>
+        <caption>Le fer avant et après compositage</caption>
+        <thead><tr><th></th><th>Échantillons bruts</th><th>Composites de 2 m</th></tr></thead>
+        <tbody>
+          <tr><td>Nombre</td><td>2 702</td><td>1 818</td></tr>
+          <tr><td>Moyenne Fe</td><td>33,57 %</td><td>31,26 %</td></tr>
+          <tr><td>Écart-type</td><td>9,32 %</td><td>8,58 %</td></tr>
+          <tr><td>Coefficient de variation</td><td>27,8 %</td><td>27,4 %</td></tr>
+        </tbody>
+      </table></div>
+      <div class="retenir"><b>Lecture :</b> la moyenne baisse de 2,3 points parce que les intervalles courts et riches pesaient trop dans la moyenne brute. Le compositage corrige ce biais d'échantillonnage tout en conservant la variabilité relative.</div>
+    </section>
+
+    <section id="eda">
+      <p class="etape">Étape 5</p>
+      <h2>Analyse exploratoire : une seule erreur masquait la relation clé</h2>
+      <p>Dans une formation ferrifère rubanée, le fer et la silice alternent en bandes : plus il y a de quartz, moins il y a de fer. Cette relation n'apparaissait pourtant pas dans les premiers calculs.</p>
+      <div class="graph">
+        <h3>Corrélation entre le fer et la silice</h3>
+        <p>Coefficient de Pearson sur les composites de 2 m</p>
+        <div class="zone" style="height:150px"><canvas id="g-corr" aria-label="Corrélation Fe-SiO2 avant et après exclusion de la valeur aberrante"></canvas></div>
+      </div>
+      <div class="retenir"><b>Ce que cela montre :</b> deux composites contaminés par la valeur SiO₂ = 7 754 % suffisaient à ramener la corrélation à −0,05. Une fois exclus, elle atteint −0,70 et explique 49 % de la variance du fer. C'est cette relation qui donnera son avantage au machine learning.</div>
+      <ul class="liste">
+        <li>Distribution du fer modérément asymétrique (asymétrie 0,55), non normale (test de Shapiro-Wilk).</li>
+        <li>Aucune tendance de la teneur avec l'altitude (R² = 0,0005) : le krigeage ordinaire, qui suppose une moyenne constante, est applicable.</li>
+        <li>Les autres corrélations (alumine, phosphore) sont faibles et peu utiles à l'estimation.</li>
+      </ul>
+    </section>
+
+    <section id="modele">
+      <p class="etape">Étapes 6 et 7</p>
+      <h2>Modèle géologique 3D et variographie</h2>
+      <p>Les 30 forages ont été corrélés pour construire trois domaines sous Leapfrog Geo, par modélisation implicite. Chaque domaine est ensuite estimé séparément, pour respecter l'hypothèse de stationnarité du krigeage.</p>
+      <div class="tableau"><table>
+        <caption>Domaines et modèles de variogramme (Isatis.neo)</caption>
+        <thead><tr><th>Domaine</th><th>Volume</th><th>Direction de continuité</th><th>Portée majeure</th><th>Pépite</th></tr></thead>
+        <tbody>
+          <tr><td>Encaissant</td><td>45,6 Mm³</td><td>Variable</td><td>~200 m</td><td>~0</td></tr>
+          <tr><td>Itabirite fraîche</td><td>6,94 Mm³</td><td>NW-SE (~135°)</td><td>~150 m</td><td>~0</td></tr>
+          <tr><td>Itabirite oxydée</td><td>0,81 Mm³</td><td>NW-SE (~135°)</td><td>~300 m</td><td>~0</td></tr>
+        </tbody>
+      </table></div>
+      <p>Les deux faciès d'itabirite partagent la même direction de continuité, signe d'une même formation ferrifère, l'oxydée étant son altération en surface. Modèle sphérique dans les trois cas.</p>
+    </section>
+
+    <section id="krigeage">
+      <p class="etape">Étape 8</p>
+      <h2>Krigeage ordinaire : la référence de l'industrie</h2>
+      <p>Modèle de blocs de 10 × 10 × 5 m, ellipsoïde de recherche orienté selon la variographie, 4 à 25 échantillons par bloc selon le domaine, deux passes d'estimation. Au total, 46 341 blocs ont reçu une teneur.</p>
+      <div class="retenir"><b>Validation croisée :</b> pas de biais global (moyenne des erreurs standardisées = 0,00) et corrélation estimé-observé de 0,81. Mais la pente de régression n'est que de 0,57 : le krigeage <b>lisse</b>, il surestime les teneurs faibles (jusqu'à +3,6 % Fe) et sous-estime les fortes (jusqu'à −6 % Fe).</div>
+    </section>
+
+    <section id="ml">
+      <p class="etape">Étape 9</p>
+      <h2>Machine learning : apprendre de la chimie</h2>
+      <p>Sept variables explicatives : position (X, Y, Z), teneurs en SiO₂, Al₂O₃ et P, et type de roche. Le fer n'est jamais utilisé comme prédicteur. Les composites ont été répartis en 80 % d'entraînement (1 441) et 20 % de test (361), par tirage stratifié selon le type de roche ; les hyperparamètres ont été réglés par validation croisée à 5 plis.</p>
+      <div class="tableau"><table class="texte">
+        <caption>Modèles et réglages retenus</caption>
+        <thead><tr><th>Modèle</th><th>Réglages</th><th>R² validation croisée</th><th>R² test</th></tr></thead>
+        <tbody>
+          <tr><td>Random Forest</td><td>300 arbres, profondeur 15</td><td>0,711</td><td>0,631</td></tr>
+          <tr><td>XGBoost</td><td>300 arbres, profondeur 5, taux 0,05</td><td>0,769</td><td>0,731</td></tr>
+          <tr class="fort"><td>Stacking RF + XGBoost</td><td>méta-modèle Ridge (α = 100)</td><td>0,848</td><td>0,825</td></tr>
+        </tbody>
+      </table></div>
+      <div class="retenir"><b>Variable dominante :</b> la silice porte environ 55 % de l'importance dans la forêt aléatoire, ce qui confirme la minéralogie de dilution du fer par le quartz. L'écart faible entre validation croisée et test (0,023 pour le stacking) indique une bonne généralisation.</div>
+    </section>
+
+    <section id="comparaison">
+      <p class="etape">Étape 10</p>
+      <h2>Comparaison : ce que gagne chaque méthode</h2>
+      <div class="deux">
+        <div class="graph">
+          <h3>R² sur le jeu de test</h3>
+          <p>Part de la variance des teneurs expliquée</p>
+          <div class="zone" style="height:240px"><canvas id="g-r2" aria-label="R² par méthode"></canvas></div>
+        </div>
+        <div class="graph">
+          <h3>Erreur de prédiction (RMSE)</h3>
+          <p>En points de % Fe, plus bas est meilleur</p>
+          <div class="zone" style="height:240px"><canvas id="g-rmse" aria-label="RMSE par méthode"></canvas></div>
+        </div>
+      </div>
+      <div class="tableau"><table>
+        <thead><tr><th>Méthode</th><th>R² test</th><th>RMSE (% Fe)</th><th>Gain d'erreur vs krigeage</th><th>Pente estimé/observé</th></tr></thead>
+        <tbody>
+          <tr><td>Krigeage ordinaire</td><td>0,606</td><td>5,34</td><td>référence</td><td>0,57</td></tr>
+          <tr><td>Random Forest</td><td>0,631</td><td>5,14</td><td>−3,7 %</td><td>–</td></tr>
+          <tr><td>XGBoost</td><td>0,731</td><td>4,39</td><td>−17,8 %</td><td>–</td></tr>
+          <tr class="fort"><td>Stacking RF + XGBoost</td><td>0,825</td><td>3,54</td><td>−33,7 %</td><td>0,83</td></tr>
+        </tbody>
+      </table></div>
+      <div class="retenir"><b>Au-delà du R² :</b> le stacking réduit le biais conditionnel à une plage de −1 à +2,5 % Fe selon la classe de teneur, contre +3,6 à −6 % pour le krigeage, et resserre la bande d'incertitude à ±2 écarts-types de ±10,7 à ±7,0 % Fe.</div>
+    </section>
+
+    <section id="jorc">
+      <p class="etape">Étape 11</p>
+      <h2>Classification des ressources selon le code JORC 2012</h2>
+      <p>Chaque bloc reçoit une catégorie de confiance selon quatre critères : efficacité de krigeage, nombre d'échantillons, distance au forage le plus proche et nombre de forages contributeurs.</p>
+      <div class="tableau"><table>
+        <caption>Critères retenus</caption>
+        <thead><tr><th>Critère</th><th>Mesurée</th><th>Indiquée</th><th>Inférée</th></tr></thead>
+        <tbody>
+          <tr><td>Efficacité de krigeage</td><td>&gt; 0,50</td><td>0,20 à 0,50</td><td>0 à 0,20</td></tr>
+          <tr><td>Échantillons minimum</td><td>8</td><td>4</td><td>2</td></tr>
+          <tr><td>Distance au forage</td><td>≤ ½ portée</td><td>≤ 1 portée</td><td>≤ 1,5 portée</td></tr>
+          <tr><td>Forages contributeurs</td><td>3</td><td>2</td><td>1</td></tr>
+        </tbody>
+      </table></div>
+      <div class="graph">
+        <h3>Tonnage selon la teneur de coupure</h3>
+        <p>Millions de tonnes par catégorie, densité 3,5 t/m³</p>
+        <div class="legende"><span><i style="background:var(--rouille)"></i>Mesurée</span><span><i style="background:var(--ocre)"></i>Indiquée</span><span><i style="background:var(--sable)"></i>Inférée</span></div>
+        <div class="zone"><canvas id="g-tonnage" aria-label="Tonnage par catégorie et par teneur de coupure"></canvas></div>
+      </div>
+      <div class="tableau"><table>
+        <caption>Inventaire et sensibilité à la teneur de coupure</caption>
+        <thead><tr><th>Coupure</th><th>Mesurée</th><th>Indiquée</th><th>Inférée</th><th>Total</th><th>Teneur moyenne</th></tr></thead>
+        <tbody>
+          <tr class="fort"><td>25 % Fe</td><td>27,6 Mt</td><td>30,6 Mt</td><td>43,9 Mt</td><td>102,1 Mt</td><td>31,4 %</td></tr>
+          <tr><td>28 % Fe</td><td>21,7 Mt</td><td>23,5 Mt</td><td>29,4 Mt</td><td>74,6 Mt</td><td>–</td></tr>
+          <tr><td>30 % Fe</td><td>17,3 Mt</td><td>17,5 Mt</td><td>21,4 Mt</td><td>56,1 Mt</td><td>34,5 %</td></tr>
+          <tr><td>32 % Fe</td><td>12,7 Mt</td><td>12,1 Mt</td><td>15,0 Mt</td><td>39,8 Mt</td><td>–</td></tr>
+          <tr><td>35 % Fe</td><td>6,8 Mt</td><td>6,2 Mt</td><td>8,1 Mt</td><td>21,1 Mt</td><td>–</td></tr>
+        </tbody>
+      </table></div>
+      <div class="retenir"><b>Lecture économique :</b> passer de 25 à 30 % Fe de coupure divise presque le tonnage par deux (−45 %). La minéralisation est continue, sans saut entre minerai riche et pauvre : le choix de la coupure, donc du procédé de concentration, pèse autant que la géologie dans la valeur du projet.</div>
+    </section>
+
+    <section id="limites">
+      <p class="etape">Recul critique</p>
+      <h2>Limites et recommandations</h2>
+      <ul class="liste">
+        <li><b>Densité uniforme</b> de 3,5 t/m³ faute de mesures par domaine : mesurer la densité sur carottes.</li>
+        <li><b>43,9 Mt en Inférée</b>, surtout en profondeur : densifier la maille de forage pour les reclasser.</li>
+        <li><b>Phosphore et alumine</b> encore extrêmes : les écrêter domaine par domaine.</li>
+        <li><b>Jeu de test tiré au hasard</b> parmi les composites : deux composites voisins d'un même forage peuvent se retrouver de part et d'autre. Un test sur des forages entiers, comme dans le <a href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml">code de démonstration</a>, donnerait une mesure plus prudente.</li>
+        <li><b>Covariables au point estimé :</b> le machine learning utilise la silice mesurée ; pour un modèle de blocs, elle doit d'abord être estimée elle-même.</li>
+        <li><b>Suite logique :</b> des approches hybrides krigeage-machine learning, et l'extension aux autres gisements ferrifères de la région.</li>
+      </ul>
+      <p style="font-size:14px">La classification présentée relève d'un travail académique encadré ; une déclaration publique JORC exige la signature d'une Personne Compétente.</p>
+    </section>
+
+    <div class="pied">
+      <span>Emmanuel Noualeu, analyste de données et ingénieur des mines · <a href="mailto:emmanuelnoualeu@gmail.com">emmanuelnoualeu@gmail.com</a></span>
+      <a class="btn" href="../../#contact">Me contacter</a>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function () {
+  if (!window.Chart) return;
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  Chart.defaults.locale = "fr-FR";
+  Chart.defaults.font.family = "Archivo, system-ui, sans-serif";
+  Chart.defaults.color = css("--encre-2");
+  const nf = (n, d) => new Intl.NumberFormat("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
+  const grille = { color: css("--trait") };
+  const base = (extra) => Object.assign({ responsive: true, maintainAspectRatio: false, animation: { duration: 300 },
+    plugins: { legend: { display: false } } }, extra);
+  const methodes = ["Krigeage", "Random Forest", "XGBoost", "Stacking"];
+  const coul = [css("--gris"), css("--gris"), css("--gris"), css("--rouille")];
+
+  new Chart(document.getElementById("g-corr"), {
+    type: "bar",
+    data: { labels: ["Avec l'erreur SiO₂ = 7 754 %", "Après exclusion"], datasets: [{ data: [-0.051, -0.699],
+      backgroundColor: [css("--gris"), css("--rouille")], borderRadius: 4, barThickness: 26 }] },
+    options: base({ indexAxis: "y", scales: { x: { min: -1, max: 0, grid: grille, ticks: { callback: v => nf(v, 1) } }, y: { grid: { display: false } } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => " r = " + nf(c.raw, 3) } } } })
+  });
+
+  new Chart(document.getElementById("g-r2"), {
+    type: "bar",
+    data: { labels: methodes, datasets: [{ data: [0.606, 0.631, 0.731, 0.825], backgroundColor: coul, borderRadius: 4, maxBarThickness: 46 }] },
+    options: base({ scales: { y: { min: 0, max: 1, grid: grille, ticks: { callback: v => nf(v, 1) } }, x: { grid: { display: false } } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => " R² = " + nf(c.raw, 3) } } } })
+  });
+
+  new Chart(document.getElementById("g-rmse"), {
+    type: "bar",
+    data: { labels: methodes, datasets: [{ data: [5.34, 5.14, 4.39, 3.54], backgroundColor: coul, borderRadius: 4, maxBarThickness: 46 }] },
+    options: base({ scales: { y: { min: 0, grid: grille, ticks: { callback: v => nf(v, 0) } }, x: { grid: { display: false } } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => " RMSE = " + nf(c.raw, 2) + " % Fe" } } } })
+  });
+
+  new Chart(document.getElementById("g-tonnage"), {
+    type: "bar",
+    data: { labels: ["25 %", "28 %", "30 %", "32 %", "35 %"], datasets: [
+      { label: "Mesurée", data: [27.56, 21.72, 17.27, 12.68, 6.79], backgroundColor: css("--rouille") },
+      { label: "Indiquée", data: [30.61, 23.45, 17.47, 12.08, 6.16], backgroundColor: css("--ocre") },
+      { label: "Inférée", data: [43.91, 29.41, 21.40, 15.00, 8.12], backgroundColor: css("--sable") }] },
+    options: base({ scales: { x: { stacked: true, grid: { display: false }, title: { display: true, text: "Teneur de coupure (Fe)" } },
+      y: { stacked: true, grid: grille, title: { display: true, text: "Mt" } } },
+      datasets: { bar: { borderColor: css("--carte"), borderWidth: { top: 2 }, maxBarThickness: 64 } },
+      plugins: { legend: { display: false }, tooltip: { mode: "index", callbacks: { label: c => " " + c.dataset.label + " : " + nf(c.raw, 1) + " Mt" } } } })
+  });
+})();
+</script>
+</body>
+</html>
