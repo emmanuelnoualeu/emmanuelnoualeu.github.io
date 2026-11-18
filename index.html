@@ -4,343 +4,716 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Emmanuel Noualeu, analyste de données</title>
-<meta name="description" content="Ingénieur minier et analyste de données freelance : nettoyage, analyse statistique, tableaux de bord Excel et web, données minières, ventes et clients.">
+<meta name="description" content="Ingénieur des mines et analyste de données freelance à Douala : nettoyage de données, analyses statistiques, tableaux de bord Excel, Power BI et web, données minières. Cinq études de cas publiques.">
 <meta property="og:title" content="Emmanuel Noualeu, analyste de données">
-<meta property="og:description" content="Études de cas : estimation de ressources, segmentation clients, ventes, tableau de bord Excel, marché des métaux.">
-<meta property="og:image" content="assets/forages.jpg">
+<meta property="og:description" content="Cinq études de cas : estimation de ressources, segmentation clients, ventes, tableau de bord Excel, marché des métaux.">
+<meta property="og:image" content="https://emmanuelnoualeu.github.io/assets/forages.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2212%22 fill=%22%239c3f28%22/%3E%3Ctext x=%2232%22 y=%2242%22 font-family=%22Arial%22 font-weight=%22700%22 font-size=%2226%22 fill=%22white%22 text-anchor=%22middle%22%3EEN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
-    --fond: #f1f0ec;
-    --fond-2: #e8e6e0;
-    --encre: #231f1b;
-    --encre-2: #57514a;
-    --encre-3: #7b746b;
-    --trait: #d8d4cb;
-    --ocre: #9a6a1f;
-    --rouille: #9c3f28;
-    --olive: #5f6b2e;
-    --bouton: #231f1b;
-    --bouton-txt: #f1f0ec;
+    --fond: #f1f0ec; --carte: #fbfaf7; --fond-2: #e8e6e0;
+    --encre: #231f1b; --encre-2: #57514a; --encre-3: #7b746b; --trait: #dcd8cf;
+    --ocre: #9a6a1f; --ocre-pale: #f2e6cf; --rouille: #9c3f28; --rouille-fonce: #7f321f;
+    --olive: #5a6a2a; --olive-pale: #e6ebd5; --wa: #1d7d4b;
+    --nuit: #221d19; --nuit-txt: #eee9e1; --nuit-2: #b9b0a4;
+    --ombre: 0 1px 2px rgba(35, 31, 27, .05), 0 8px 24px -12px rgba(35, 31, 27, .18);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --fond: #1c1916; --fond-2: #26221e; --encre: #eee9e1; --encre-2: #c4bcb1; --encre-3: #978f84;
-      --trait: #3a352f; --ocre: #d7a24e; --rouille: #d0674a; --olive: #9aa65a; --bouton: #eee9e1; --bouton-txt: #1c1916;
+      --fond: #1a1714; --carte: #221e1a; --fond-2: #2b2621; --encre: #eee9e1; --encre-2: #c4bcb1; --encre-3: #978f84;
+      --trait: #3a342e; --ocre: #d7a24e; --ocre-pale: #3a2f1e; --rouille: #d0674a; --rouille-fonce: #e27c60;
+      --olive: #a9b86a; --olive-pale: #2c3020; --wa: #2a9a60; --nuit: #120f0d; --ombre: none;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --fond: #1c1916; --fond-2: #26221e; --encre: #eee9e1; --encre-2: #c4bcb1; --encre-3: #978f84;
-    --trait: #3a352f; --ocre: #d7a24e; --rouille: #d0674a; --olive: #9aa65a; --bouton: #eee9e1; --bouton-txt: #1c1916;
+    --fond: #1a1714; --carte: #221e1a; --fond-2: #2b2621; --encre: #eee9e1; --encre-2: #c4bcb1; --encre-3: #978f84;
+    --trait: #3a342e; --ocre: #d7a24e; --ocre-pale: #3a2f1e; --rouille: #d0674a; --rouille-fonce: #e27c60;
+    --olive: #a9b86a; --olive-pale: #2c3020; --wa: #2a9a60; --nuit: #120f0d; --ombre: none;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-  body { margin: 0; background: var(--fond); color: var(--encre);
-         font-family: "Archivo", system-ui, sans-serif; font-size: 17px; line-height: 1.6;
-         font-variation-settings: "wdth" 100; }
-  a { color: inherit; text-decoration-color: var(--ocre); text-underline-offset: 3px; }
-  a:hover { text-decoration-thickness: 2px; }
-  :focus-visible { outline: 2px solid var(--ocre); outline-offset: 3px; border-radius: 2px; }
-  .page { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-  .etroit { max-width: 68ch; }
+  body { margin: 0; background: var(--fond); color: var(--encre); font-family: "Archivo", system-ui, sans-serif;
+         font-size: 16.5px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--ocre); outline-offset: 3px; border-radius: 3px; }
+  .ic { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .page { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  .etroit { max-width: 64ch; }
 
-  /* En-tête */
-  .barre { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; gap: 16px; }
-  .barre .nom { font-weight: 700; font-variation-settings: "wdth" 115; letter-spacing: -0.01em; text-decoration: none; }
-  .barre nav { display: flex; gap: 22px; font-size: 15px; }
-  .barre nav a { text-decoration: none; color: var(--encre-2); }
-  .barre nav a:hover { color: var(--encre); }
+  /* En-tête fixe */
+  .entete { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--fond) 88%, transparent);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--trait); }
+  .entete .page { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px; }
+  .marque { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .mono { width: 38px; height: 38px; border-radius: 8px; background: var(--rouille); color: #fff; display: grid; place-items: center;
+          font-weight: 800; font-size: 15px; letter-spacing: .02em; font-variation-settings: "wdth" 110; }
+  .marque b { display: block; font-size: 15.5px; line-height: 1.2; }
+  .marque small { display: block; font-size: 13px; color: var(--encre-3); }
+  .menu { display: flex; gap: 26px; font-size: 15px; }
+  .menu a { text-decoration: none; color: var(--encre-2); }
+  .menu a:hover { color: var(--encre); }
+
+  /* Boutons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 12px 20px; border-radius: 8px;
+         font-family: inherit; font-weight: 600; font-size: 15.5px; line-height: 1.2; text-decoration: none; border: 1.5px solid transparent; cursor: pointer; white-space: nowrap; }
+  .btn-wa { background: var(--wa); color: #fff; }
+  .btn-wa:hover { filter: brightness(1.08); }
+  .btn-plein { background: var(--rouille); color: #fff; }
+  .btn-plein:hover { background: var(--rouille-fonce); }
+  .btn-creux { background: var(--carte); color: var(--encre); border-color: var(--trait); }
+  .btn-creux:hover { border-color: var(--encre-3); }
+  .btn-petit { padding: 9px 16px; font-size: 14.5px; }
 
   /* Accroche */
-  .accroche { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 56px; align-items: start; padding: 56px 0 72px; }
-  h1 { font-size: clamp(2.6rem, 6.4vw, 5.2rem); line-height: 0.98; margin: 0 0 28px; font-weight: 800;
-       font-variation-settings: "wdth" 122; letter-spacing: -0.035em; }
-  .lead { font-size: clamp(1.15rem, 1.9vw, 1.38rem); line-height: 1.5; color: var(--encre-2); margin: 0 0 32px; max-width: 34em; }
-  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 6px; font-weight: 600; font-size: 16px;
-         text-decoration: none; border: 1.5px solid var(--encre); }
-  .btn.plein { background: var(--bouton); color: var(--bouton-txt); border-color: var(--bouton); }
-  .btn.plein:hover { background: var(--rouille); border-color: var(--rouille); color: #fff; }
-  .btn.creux:hover { background: var(--fond-2); }
-  .faits { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 22px; color: var(--encre-3); font-size: 15px; }
-  .faits li::before { content: ""; display: inline-block; width: 6px; height: 6px; background: var(--ocre); margin-right: 8px; vertical-align: middle; }
+  .accroche { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 56px; align-items: center; padding: 48px 0 52px; }
+  .dispo { display: inline-flex; align-items: center; gap: 9px; background: var(--olive-pale); color: var(--olive); font-weight: 600;
+           font-size: 14px; padding: 7px 14px; border-radius: 999px; margin-bottom: 22px; }
+  .dispo i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 22%, transparent); }
+  h1 { font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.02; margin: 0 0 22px; font-weight: 800;
+       font-variation-settings: "wdth" 112; letter-spacing: -0.035em; }
+  .lead { font-size: clamp(1.1rem, 1.7vw, 1.28rem); line-height: 1.55; color: var(--encre-2); margin: 0 0 22px; max-width: 36em; }
+  .lead strong { color: var(--encre); font-weight: 650; }
+  .missions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 26px; font-size: 14px; color: var(--encre-3); }
+  .puce { display: inline-block; border: 1px solid var(--trait); background: var(--carte); color: var(--encre); padding: 5px 12px; border-radius: 999px; font-size: 14px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--trait);
+          color: var(--encre-2); font-size: 14.5px; }
+  .meta span { display: inline-flex; align-items: center; gap: 8px; }
+  .meta .ic { color: var(--ocre); width: 17px; height: 17px; }
 
-  .colonne { display: grid; grid-template-columns: auto auto; gap: 14px; align-items: start; }
-  .carotte { width: 112px; height: auto; display: block; }
+  .carte-forage { background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 22px 18px; }
+  .carte-forage .haut { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; }
+  .carotte { width: 70px; height: auto; display: block; }
   .carotte .cadre { stroke: var(--encre); stroke-width: 1; }
   .carotte .tick { stroke: var(--encre-3); stroke-width: 1; }
   .carotte .tlab { font: 11px "Archivo", sans-serif; fill: var(--encre-3); }
-  .colonne figcaption { max-width: 15ch; font-size: 13px; line-height: 1.45; color: var(--encre-3); padding-top: 2px; }
-  .colonne figcaption strong { display: block; color: var(--encre); font-weight: 600; margin-bottom: 6px; }
-  .rampe { display: block; height: 8px; width: 100%; margin: 10px 0 4px;
-           background: linear-gradient(90deg, #e2d6be, #d6b278, #b7832f, #9c3f28, #5c2016); }
-  .rampe-lab { display: flex; justify-content: space-between; font-size: 12px; }
+  .carte-forage h2 { font-size: 15px; margin: 2px 0 6px; font-variation-settings: "wdth" 100; letter-spacing: 0; }
+  .carte-forage p { margin: 0; font-size: 13.5px; color: var(--encre-3); line-height: 1.5; }
+  .rampe { display: block; height: 8px; margin: 12px 0 4px; border-radius: 2px; background: linear-gradient(90deg, #e2d6be, #d6b278, #b7832f, #9c3f28, #5c2016); }
+  .rampe-lab { display: flex; justify-content: space-between; font-size: 12px; color: var(--encre-3); }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+  .stat { background: var(--fond); border-radius: 10px; padding: 12px 14px; }
+  .stat b { display: block; font-size: 1.45rem; line-height: 1.1; font-weight: 800; font-variation-settings: "wdth" 115; color: var(--rouille); }
+  .stat span { font-size: 13px; color: var(--encre-2); line-height: 1.35; display: block; margin-top: 3px; }
+
+  /* Bandeau d'atouts */
+  .atouts { border-top: 1px solid var(--trait); border-bottom: 1px solid var(--trait); background: var(--carte); }
+  .atouts .page { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .atout { display: flex; gap: 14px; padding: 24px 22px; }
+  .atout + .atout { border-left: 1px solid var(--trait); }
+  .atout .rond { width: 40px; height: 40px; border-radius: 10px; background: var(--ocre-pale); color: var(--ocre); display: grid; place-items: center; flex: none; }
+  .atout h3 { margin: 0 0 3px; font-size: 16px; }
+  .atout p { margin: 0; font-size: 14.5px; color: var(--encre-2); line-height: 1.5; }
 
   /* Sections */
-  section { padding: 72px 0; border-top: 1px solid var(--trait); }
-  h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1.1; margin: 0 0 14px; font-weight: 750;
-       font-variation-settings: "wdth" 115; letter-spacing: -0.02em; }
-  .intro { color: var(--encre-2); margin: 0 0 40px; font-size: 1.08rem; }
+  section.bloc { padding: 84px 0 0; }
+  .sur-titre { color: var(--ocre); font-weight: 600; font-size: 15px; margin: 0 0 10px; }
+  h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.08; margin: 0 0 14px; font-weight: 780;
+       font-variation-settings: "wdth" 116; letter-spacing: -0.025em; }
+  .intro { color: var(--encre-2); margin: 0 0 32px; font-size: 1.08rem; }
 
-  /* Services */
-  .services { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; }
-  .service { padding: 22px 0; border-top: 1px solid var(--trait); }
-  .service h3 { margin: 0 0 6px; font-size: 1.15rem; font-weight: 700; }
-  .service p { margin: 0; color: var(--encre-2); }
-  .service .livrable { display: block; margin-top: 8px; font-size: 14px; color: var(--encre-3); }
+  /* Filtres */
+  .filtres { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; }
+  .filtres button { font-family: inherit; font-weight: 500; font-size: 14.5px; line-height: 1; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--trait);
+                    background: var(--carte); color: var(--encre-2); cursor: pointer; }
+  .filtres button[aria-pressed="true"] { background: var(--encre); color: var(--fond); border-color: var(--encre); }
 
   /* Projets */
-  .projet { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 44px; padding: 44px 0; border-top: 1px solid var(--trait); align-items: start; }
-  .projet:first-of-type { border-top: 0; padding-top: 8px; }
-  .projet img { width: 100%; height: auto; display: block; border-radius: 4px; border: 1px solid var(--trait); background: #fff; }
-  .domaine { font-size: 14px; color: var(--ocre); font-weight: 600; margin: 0 0 8px; }
-  .projet h3 { font-size: clamp(1.3rem, 2.2vw, 1.65rem); line-height: 1.2; margin: 0 0 14px; font-weight: 700;
-               font-variation-settings: "wdth" 108; letter-spacing: -0.01em; }
-  .projet p { margin: 0 0 14px; color: var(--encre-2); }
-  .chiffre { display: flex; gap: 14px; align-items: baseline; margin: 18px 0; padding: 14px 0; border-top: 1px solid var(--trait); border-bottom: 1px solid var(--trait); }
-  .chiffre b { font-size: 2rem; font-weight: 800; font-variation-settings: "wdth" 118; letter-spacing: -0.02em; color: var(--rouille); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .chiffre span { font-size: 15px; color: var(--encre-2); line-height: 1.4; }
-  .outils { font-size: 14px; color: var(--encre-3); margin: 0 0 16px; }
-  .liens { display: flex; flex-wrap: wrap; gap: 10px 20px; font-weight: 600; font-size: 15px; }
+  .projet { background: var(--carte); border: 1px solid var(--trait); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; margin-bottom: 26px; }
+  .projet[hidden] { display: none; }
+  .projet .visuel { display: flex; justify-content: center; background: #fff; border-bottom: 1px solid var(--trait); padding: 18px 18px 10px; }
+  .projet .visuel img { display: block; width: auto; max-width: 100%; height: auto; max-height: 430px; }
+  .projet .corps { padding: 26px 30px 30px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag { font-size: 13px; padding: 3px 10px; border-radius: 6px; background: var(--fond-2); color: var(--encre-2); }
+  .tag.mines { background: var(--ocre-pale); color: var(--ocre); }
+  .projet h3 { font-size: clamp(1.35rem, 2.3vw, 1.75rem); line-height: 1.18; margin: 0 0 8px; font-weight: 750;
+               font-variation-settings: "wdth" 110; letter-spacing: -0.015em; max-width: 30ch; }
+  .projet .resume { color: var(--encre-2); margin: 0 0 22px; max-width: 70ch; }
+  .trois { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; padding: 20px 0 22px; border-top: 1px solid var(--trait); }
+  .trois h4 { margin: 0 0 8px; font-size: 13.5px; font-weight: 650; color: var(--encre-3); }
+  .trois p { margin: 0; font-size: 15px; }
+  .coches { list-style: none; padding: 0; margin: 0; font-size: 14.5px; color: var(--encre-2); }
+  .coches li { display: flex; gap: 8px; margin-bottom: 7px; line-height: 1.45; }
+  .coches .ic { color: var(--olive); width: 16px; height: 16px; margin-top: 3px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .kpi { background: var(--fond); border-radius: 10px; padding: 13px 15px; }
+  .kpi b { display: block; font-size: 1.5rem; line-height: 1.1; font-weight: 800; font-variation-settings: "wdth" 115; color: var(--encre); font-variant-numeric: tabular-nums; }
+  .kpi b.fort { color: var(--rouille); }
+  .kpi span { display: block; font-size: 13px; color: var(--encre-2); margin-top: 3px; line-height: 1.35; }
+  .liens { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .appel { display: flex; justify-content: space-between; align-items: center; gap: 24px; background: var(--ocre-pale); border-radius: 16px; padding: 28px 32px; margin-top: 8px; }
+  .appel h3 { margin: 0 0 4px; font-size: 1.35rem; font-variation-settings: "wdth" 110; }
+  .appel p { margin: 0; color: var(--encre-2); }
+
+  /* Services */
+  .services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .service { background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; padding: 22px 22px 20px; }
+  .service .rond { width: 40px; height: 40px; border-radius: 10px; background: var(--ocre-pale); color: var(--ocre); display: grid; place-items: center; margin-bottom: 14px; }
+  .service h3 { margin: 0 0 6px; font-size: 17px; }
+  .service p { margin: 0 0 12px; color: var(--encre-2); font-size: 15px; }
+  .service .livrable { font-size: 13.5px; color: var(--encre-3); border-top: 1px solid var(--trait); padding-top: 10px; display: block; }
 
   /* Méthode */
-  .etapes { list-style: none; counter-reset: e; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
-  .etapes li { counter-increment: e; border-top: 3px solid var(--encre); padding-top: 14px; }
-  .etapes li::before { content: counter(e); display: block; font-weight: 800; font-size: 1.6rem; color: var(--ocre); font-variation-settings: "wdth" 120; margin-bottom: 4px; }
-  .etapes h3 { margin: 0 0 6px; font-size: 1.05rem; }
-  .etapes p { margin: 0; color: var(--encre-2); font-size: 15px; }
+  .etapes { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+            background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; overflow: hidden; counter-reset: e; }
+  .etapes li { padding: 22px; counter-increment: e; }
+  .etapes li + li { border-left: 1px solid var(--trait); }
+  .etapes li::before { content: "Étape " counter(e); display: block; font-size: 13px; font-weight: 600; color: var(--ocre); margin-bottom: 8px; }
+  .etapes h3 { margin: 0 0 6px; font-size: 17px; }
+  .etapes p { margin: 0 0 10px; font-size: 14.5px; color: var(--encre-2); }
+  .etapes small { font-size: 13px; color: var(--encre-3); }
 
   /* Parcours */
-  .parcours { max-width: 880px; }
-  .portrait { width: 220px; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: var(--fond-2);
-              display: grid; place-items: center; font-size: 3rem; font-weight: 800; color: var(--encre-3); font-variation-settings: "wdth" 120; }
-  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .jalons { list-style: none; padding: 0; margin: 24px 0 0; }
-  .jalons li { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 16px; padding: 12px 0; border-top: 1px solid var(--trait); }
-  .jalons .quand { color: var(--encre-3); font-size: 15px; font-variant-numeric: tabular-nums; }
-  .jalons strong { display: block; }
-  .jalons span.det { color: var(--encre-2); font-size: 15px; }
-  .boite-outils { margin-top: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; font-size: 15px; }
-  .boite-outils h3 { font-size: 14px; color: var(--encre-3); font-weight: 600; margin: 0 0 4px; }
-  .boite-outils p { margin: 0; }
+  .parcours { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 56px; align-items: start; }
+  .parcours .gauche { position: sticky; top: 100px; }
+  .frise { list-style: none; margin: 0; padding: 0 0 0 26px; border-left: 2px solid var(--trait); }
+  .frise li { position: relative; padding: 0 0 26px; }
+  .frise li::before { content: ""; position: absolute; left: -34px; top: 5px; width: 12px; height: 12px; border-radius: 50%;
+                      background: var(--fond); border: 2.5px solid var(--rouille); }
+  .frise li:first-child::before { background: var(--rouille); }
+  .frise .quand { font-size: 13.5px; font-weight: 600; color: var(--ocre); }
+  .frise h3 { margin: 2px 0 1px; font-size: 17px; }
+  .frise .org { font-size: 14px; color: var(--encre-2); font-weight: 600; margin-bottom: 4px; }
+  .frise p { margin: 0; font-size: 14.5px; color: var(--encre-2); }
+
+  /* Compétences */
+  .competences { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 16px; }
+  .panneau { background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; padding: 22px 24px; }
+  .panneau h3 { margin: 0 0 12px; font-size: 17px; }
+  .outil { display: grid; grid-template-columns: 11em minmax(0, 1fr); gap: 12px; padding: 10px 0; border-top: 1px solid var(--trait); font-size: 14.5px; }
+  .outil:first-of-type { border-top: 0; }
+  .outil b { font-weight: 650; }
+  .outil span { color: var(--encre-2); }
+  .pile { display: grid; gap: 16px; }
+  .ligne { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--trait); font-size: 14.5px; }
+  .ligne:first-of-type { border-top: 0; }
+  .ligne span:last-child { color: var(--encre-2); text-align: right; }
+  .certif { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px solid var(--trait); font-size: 14.5px; }
+  .certif:first-of-type { border-top: 0; }
+  .certif .an { color: var(--ocre); font-weight: 600; }
+  .certif small { display: block; color: var(--encre-3); font-size: 13px; }
+
+  /* Pourquoi */
+  .pourquoi { background: var(--nuit); color: var(--nuit-txt); border-radius: 18px; padding: 48px; display: grid;
+              grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; margin-top: 84px; }
+  .pourquoi .sur-titre { color: #d7a24e; }
+  .pourquoi h2 { color: #fff; }
+  .pourquoi > div > p { color: var(--nuit-2); margin: 0 0 24px; }
+  .raisons { display: grid; gap: 20px; }
+  .raison { display: flex; gap: 14px; }
+  .raison .rond { width: 38px; height: 38px; border-radius: 9px; background: rgba(255, 255, 255, .08); color: #d7a24e; display: grid; place-items: center; flex: none; }
+  .raison h3 { margin: 0 0 3px; font-size: 16px; color: #fff; }
+  .raison p { margin: 0; font-size: 14.5px; color: var(--nuit-2); }
+  .pourquoi .btn-creux { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .3); }
+
+  /* Anglais */
+  .anglais { background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; padding: 28px 30px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 32px; }
+  .anglais p { margin: 0 0 12px; color: var(--encre-2); }
+  .anglais ul { margin: 0; padding-left: 18px; color: var(--encre-2); font-size: 15px; }
+  .anglais li { margin-bottom: 6px; }
 
   /* Contact */
-  .contact h2 { font-size: clamp(2rem, 5vw, 3.6rem); font-variation-settings: "wdth" 122; letter-spacing: -0.03em; max-width: 16ch; }
-  .canaux { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0 32px; margin-top: 36px; }
-  .canal { padding: 16px 0; border-top: 1px solid var(--trait); }
-  .canal span { display: block; font-size: 14px; color: var(--encre-3); }
-  .canal a { font-weight: 600; font-size: 1.05rem; word-break: break-word; }
-  footer { padding: 32px 0 48px; color: var(--encre-3); font-size: 14px; border-top: 1px solid var(--trait); }
+  .contact { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; align-items: start; }
+  .fiche { background: var(--carte); border: 1px solid var(--trait); border-radius: 16px; box-shadow: var(--ombre); padding: 8px 24px; }
+  .champ { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--trait); }
+  .champ:first-child { border-top: 0; }
+  .champ .g { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .champ .g .ic { color: var(--ocre); }
+  .champ small { display: block; font-size: 12.5px; color: var(--encre-3); }
+  .champ a { font-weight: 600; text-decoration: none; word-break: break-word; }
+  .champ a:hover { text-decoration: underline; text-decoration-color: var(--ocre); }
+  .copier { font-family: inherit; font-weight: 500; font-size: 13px; line-height: 1; border: 1px solid var(--trait); background: var(--fond); color: var(--encre-2);
+            border-radius: 6px; padding: 7px 10px; cursor: pointer; flex: none; }
 
-  @media (max-width: 900px) {
-    .accroche { grid-template-columns: 1fr; gap: 36px; padding: 32px 0 56px; }
-    .colonne { grid-template-columns: auto 1fr; }
-    .carotte { width: 96px; }
-    .projet { grid-template-columns: 1fr; gap: 22px; }
-    .etapes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .parcours { grid-template-columns: 1fr; gap: 28px; }
-    .boite-outils { grid-template-columns: 1fr; }
-    .services { grid-template-columns: 1fr; }
+  footer { margin-top: 84px; border-top: 1px solid var(--trait); }
+  footer .page { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 26px 24px 34px; font-size: 14px; color: var(--encre-3); }
+  footer a { color: var(--encre-2); }
+
+  .wa-flottant { position: fixed; right: 20px; bottom: 20px; z-index: 30; box-shadow: 0 8px 24px -6px rgba(0, 0, 0, .35); border-radius: 999px; padding: 12px 18px;
+                 transition: opacity .2s, transform .2s; }
+  .wa-flottant.cache { opacity: 0; transform: translateY(12px); pointer-events: none; }
+
+  @media (max-width: 980px) {
+    .menu { display: none; }
+    .accroche { grid-template-columns: 1fr; gap: 36px; padding-top: 40px; }
+    .atouts .page { grid-template-columns: 1fr; padding: 0; }
+    .atout + .atout { border-left: 0; border-top: 1px solid var(--trait); }
+    .services { grid-template-columns: 1fr 1fr; }
+    .etapes { grid-template-columns: 1fr 1fr; }
+    .etapes li:nth-child(3) { border-left: 0; }
+    .etapes li:nth-child(n+3) { border-top: 1px solid var(--trait); }
+    .parcours, .competences, .contact, .anglais, .pourquoi { grid-template-columns: 1fr; gap: 28px; }
+    .parcours .gauche { position: static; }
+    .trois { grid-template-columns: 1fr; gap: 18px; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .appel { flex-direction: column; align-items: flex-start; }
   }
-  @media (max-width: 560px) {
+  @media (max-width: 600px) {
     body { font-size: 16px; }
     .page { padding: 0 16px; }
-    .barre nav { display: none; }
-    .etapes { grid-template-columns: 1fr; }
-    .jalons li { grid-template-columns: 1fr; gap: 2px; }
-    .portrait { width: 160px; }
-    .chiffre b { font-size: 1.6rem; }
+    .marque small { display: none; }
+    .entete .btn { padding: 9px 13px; font-size: 14px; }
+    .services, .etapes { grid-template-columns: 1fr; }
+    .etapes li + li { border-left: 0; border-top: 1px solid var(--trait); }
+    .projet .corps { padding: 20px 18px 22px; }
+    .pourquoi { padding: 30px 22px; }
+    .outil { grid-template-columns: 1fr; gap: 2px; }
+    .actions .btn { flex: 1 1 auto; }
+    .wa-flottant span { display: none; }
+    .wa-flottant { padding: 14px; }
   }
 </style>
 </head>
 <body>
-<div class="page">
-  <header class="barre">
-    <a class="nom" href="#">Emmanuel Noualeu</a>
-    <nav aria-label="Navigation principale">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 8.5c0 3.3 2.8 6.5 6.4 6.5l1.2-1.4-2-1-1 .8c-1-.4-2-1.4-2.4-2.4l.8-1-1-2z"/></symbol>
+  <symbol id="i-tel" viewBox="0 0 24 24"><path d="M5 4h3.5l1.6 4.2-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></symbol>
+  <symbol id="i-lieu" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="i-heure" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-langue" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.3 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.3-3.5-8.5S9.6 5.9 12 3.5z"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
+  <symbol id="i-pioche" viewBox="0 0 24 24"><path d="M14.5 4.5c2.5.3 4.7 1.9 5.8 4.2"/><path d="M4.5 14.5c.3 2.5 1.9 4.7 4.2 5.8"/><path d="M15 9 5 19"/><path d="M8.5 5.5c3.6-1 7.4.1 10 2.7"/></symbol>
+  <symbol id="i-test" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-tdb" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></symbol>
+  <symbol id="i-nettoyer" viewBox="0 0 24 24"><path d="M4 6h16M7 6v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V6M10 10v6M14 10v6M9 6l1-2h4l1 2"/></symbol>
+  <symbol id="i-couches" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="M3 12.5l9 5 9-5M3 17l9 5 9-5"/></symbol>
+  <symbol id="i-former" viewBox="0 0 24 24"><path d="M2.5 9 12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11v4.5c1.6 1.4 3.4 2 5.5 2s3.9-.6 5.5-2V11"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M4.5 19.5h15"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V16M8 7.5v.01M11.5 16v-5.5M11.5 13c0-1.6 1-2.6 2.4-2.6s2.1.9 2.1 2.6V16"/></symbol>
+  <symbol id="i-gh" viewBox="0 0 24 24"><path d="M9 19c-4 1.3-4-2-5.5-2.5M14.5 21v-3.4a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6 2.6 5 2.9 5 2.9a4.3 4.3 0 0 0-.1 3.2 4.7 4.7 0 0 0-1.3 3.2c0 4.7 2.8 5.7 5.5 6a3 3 0 0 0-.8 2.3V21"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M5 18.5 12 5l7 13.5H5z"/><path d="M12 11v3.5"/></symbol>
+  <symbol id="i-cible" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-bulle" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+</svg>
+
+<header class="entete">
+  <div class="page">
+    <a class="marque" href="#haut" aria-label="Emmanuel Noualeu, retour en haut">
+      <span class="mono" aria-hidden="true">EN</span>
+      <span><b>Emmanuel Noualeu</b><small>Analyste de données</small></span>
+    </a>
+    <nav class="menu" aria-label="Navigation principale">
       <a href="#projets">Études de cas</a>
       <a href="#services">Services</a>
       <a href="#parcours">Parcours</a>
-      <a href="#contact">Contact</a>
+      <a href="#competences">Compétences</a>
+      <a href="#english">English</a>
     </nav>
-  </header>
+    <a class="btn btn-plein btn-petit" href="#contact">Me contacter</a>
+  </div>
+</header>
 
-  <main>
+<main id="haut">
+  <div class="page">
     <div class="accroche">
       <div>
+        <span class="dispo"><i aria-hidden="true"></i>Disponible pour des missions freelance, à distance</span>
         <h1>Analyste de données, formé sur le terrain minier</h1>
-        <p class="lead">Je suis Emmanuel Noualeu, ingénieur des mines. J'analyse vos données de forage, de ventes ou de clients : je vérifie leur qualité, je teste ce qui tient statistiquement, puis je vous livre un tableau de bord et des recommandations que vous pouvez appliquer.</p>
-        <div class="actions">
-          <a class="btn plein" href="mailto:emmanuelnoualeu@gmail.com?subject=Projet%20d'analyse%20de%20donn%C3%A9es">Proposer un projet</a>
-          <a class="btn creux" href="#projets">Voir les études de cas</a>
+        <p class="lead">Ingénieur des mines, j'analyse vos <strong>données de ventes, de clients ou de forage</strong> : je vérifie leur qualité, je teste ce qui tient statistiquement, puis je vous livre un <strong>tableau de bord et des recommandations</strong> que vous pouvez appliquer.</p>
+        <div class="missions">
+          <span>Missions :</span>
+          <span class="puce">Nettoyage de données</span>
+          <span class="puce">Tableaux de bord Excel et Power BI</span>
+          <span class="puce">Analyse statistique</span>
+          <span class="puce">Données minières</span>
         </div>
-        <ul class="faits">
-          <li>Python, SQL, Excel</li>
-          <li>Géostatistique et machine learning</li>
-          <li>Français et anglais</li>
-          <li>Travail à distance, fuseau UTC+1</li>
-        </ul>
+        <div class="actions">
+          <a class="btn btn-wa" href="https://wa.me/237679617770?text=Bonjour%20Emmanuel%2C%20j%27ai%20vu%20votre%20portfolio." target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>Écrire sur WhatsApp</a>
+          <a class="btn btn-plein" href="tel:+237696699747"><svg class="ic"><use href="#i-tel"/></svg>Appeler</a>
+          <a class="btn btn-creux" href="mailto:emmanuelnoualeu@gmail.com?subject=Projet%20d'analyse%20de%20donn%C3%A9es"><svg class="ic"><use href="#i-mail"/></svg>E-mail</a>
+        </div>
+        <div class="meta">
+          <span><svg class="ic"><use href="#i-lieu"/></svg>Douala, Cameroun</span>
+          <span><svg class="ic"><use href="#i-heure"/></svg>Fuseau UTC+1</span>
+          <span><svg class="ic"><use href="#i-langue"/></svg>Français, anglais</span>
+        </div>
       </div>
-      <figure class="colonne" aria-describedby="carotte-legende">
-        <svg class="carotte" viewBox="-2 -8 102 576" role="img" aria-labelledby="carotte-titre"><title id="carotte-titre">Teneurs en fer le long d'un forage de 131 m (jeu de démonstration)</title><g><rect x="0" y="0.00" width="46" height="6.17" fill="#e0d2b7"><title>1.8 % Fe</title></rect><rect x="0" y="5.77" width="46" height="6.17" fill="#e0d2b7"><title>1.8 % Fe</title></rect><rect x="0" y="11.55" width="46" height="6.17" fill="#e1d3b9"><title>1.2 % Fe</title></rect><rect x="0" y="17.32" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="23.09" width="46" height="6.17" fill="#e0d0b3"><title>3.0 % Fe</title></rect><rect x="0" y="28.87" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="34.64" width="46" height="6.17" fill="#e1d3b9"><title>1.3 % Fe</title></rect><rect x="0" y="40.41" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="46.19" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="51.96" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="57.73" width="46" height="6.17" fill="#e1d4ba"><title>1.1 % Fe</title></rect><rect x="0" y="63.51" width="46" height="6.17" fill="#e0d0b2"><title>3.2 % Fe</title></rect><rect x="0" y="69.28" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect><rect x="0" y="75.05" width="46" height="6.17" fill="#dfceae"><title>4.4 % Fe</title></rect><rect x="0" y="80.82" width="46" height="6.17" fill="#e0d1b4"><title>2.7 % Fe</title></rect><rect x="0" y="86.60" width="46" height="6.17" fill="#e0d1b4"><title>2.6 % Fe</title></rect><rect x="0" y="92.37" width="46" height="6.17" fill="#dfcdad"><title>4.8 % Fe</title></rect><rect x="0" y="98.14" width="46" height="6.17" fill="#e1d3b8"><title>1.6 % Fe</title></rect><rect x="0" y="103.92" width="46" height="6.17" fill="#e0d2b7"><title>1.9 % Fe</title></rect><rect x="0" y="109.69" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect><rect x="0" y="115.46" width="46" height="6.17" fill="#dfceae"><title>4.4 % Fe</title></rect><rect x="0" y="121.24" width="46" height="6.17" fill="#e0d2b7"><title>1.7 % Fe</title></rect><rect x="0" y="127.01" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="132.78" width="46" height="6.17" fill="#e0d1b5"><title>2.3 % Fe</title></rect><rect x="0" y="138.56" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="144.33" width="46" height="6.17" fill="#e0d1b4"><title>2.6 % Fe</title></rect><rect x="0" y="150.10" width="46" height="6.17" fill="#e0d2b6"><title>2.1 % Fe</title></rect><rect x="0" y="155.88" width="46" height="6.17" fill="#e1d3b8"><title>1.5 % Fe</title></rect><rect x="0" y="161.65" width="46" height="6.17" fill="#e0d0b3"><title>3.0 % Fe</title></rect><rect x="0" y="167.42" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="173.20" width="46" height="6.17" fill="#e0d1b5"><title>2.5 % Fe</title></rect><rect x="0" y="178.97" width="46" height="6.17" fill="#e1d3b9"><title>1.3 % Fe</title></rect><rect x="0" y="184.74" width="46" height="6.17" fill="#decba9"><title>6.0 % Fe</title></rect><rect x="0" y="190.52" width="46" height="6.17" fill="#e0d2b8"><title>1.7 % Fe</title></rect><rect x="0" y="196.29" width="46" height="6.17" fill="#e1d3b9"><title>1.2 % Fe</title></rect><rect x="0" y="202.06" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="207.84" width="46" height="6.17" fill="#dfcfb1"><title>3.7 % Fe</title></rect><rect x="0" y="213.61" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="219.38" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="225.15" width="46" height="6.17" fill="#e0d1b5"><title>2.5 % Fe</title></rect><rect x="0" y="230.93" width="46" height="6.17" fill="#e0d1b4"><title>2.6 % Fe</title></rect><rect x="0" y="236.70" width="46" height="6.17" fill="#e0d0b3"><title>2.9 % Fe</title></rect><rect x="0" y="242.47" width="46" height="6.17" fill="#e1d3b8"><title>1.6 % Fe</title></rect><rect x="0" y="248.25" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect><rect x="0" y="254.02" width="46" height="6.17" fill="#e0d2b7"><title>2.0 % Fe</title></rect><rect x="0" y="259.79" width="46" height="6.17" fill="#e0d1b5"><title>2.4 % Fe</title></rect><rect x="0" y="265.57" width="46" height="6.17" fill="#e0d1b5"><title>2.4 % Fe</title></rect><rect x="0" y="271.34" width="46" height="6.17" fill="#ac692c"><title>38.8 % Fe</title></rect><rect x="0" y="277.11" width="46" height="6.17" fill="#ac682c"><title>38.9 % Fe</title></rect><rect x="0" y="282.89" width="46" height="6.17" fill="#b1752d"><title>36.9 % Fe</title></rect><rect x="0" y="288.66" width="46" height="6.17" fill="#ad692c"><title>38.7 % Fe</title></rect><rect x="0" y="294.43" width="46" height="6.17" fill="#a9622b"><title>39.9 % Fe</title></rect><rect x="0" y="300.21" width="46" height="6.17" fill="#b88532"><title>34.4 % Fe</title></rect><rect x="0" y="305.98" width="46" height="6.17" fill="#b3792e"><title>36.4 % Fe</title></rect><rect x="0" y="311.75" width="46" height="6.17" fill="#9e4428"><title>44.2 % Fe</title></rect><rect x="0" y="317.53" width="46" height="6.17" fill="#a24f29"><title>42.6 % Fe</title></rect><rect x="0" y="323.30" width="46" height="6.17" fill="#c19246"><title>30.2 % Fe</title></rect><rect x="0" y="329.07" width="46" height="6.17" fill="#bc8b3c"><title>32.2 % Fe</title></rect><rect x="0" y="334.85" width="46" height="6.17" fill="#b98634"><title>33.9 % Fe</title></rect><rect x="0" y="340.62" width="46" height="6.17" fill="#be8e40"><title>31.3 % Fe</title></rect><rect x="0" y="346.39" width="46" height="6.17" fill="#b57e2e"><title>35.7 % Fe</title></rect><rect x="0" y="352.16" width="46" height="6.17" fill="#b98735"><title>33.6 % Fe</title></rect><rect x="0" y="357.94" width="46" height="6.17" fill="#bb8a3a"><title>32.6 % Fe</title></rect><rect x="0" y="363.71" width="46" height="6.17" fill="#bd8c3d"><title>32.0 % Fe</title></rect><rect x="0" y="369.48" width="46" height="6.17" fill="#b37b2e"><title>36.2 % Fe</title></rect><rect x="0" y="375.26" width="46" height="6.17" fill="#be8d40"><title>31.5 % Fe</title></rect><rect x="0" y="381.03" width="46" height="6.17" fill="#b98633"><title>34.0 % Fe</title></rect><rect x="0" y="386.80" width="46" height="6.17" fill="#c19247"><title>29.9 % Fe</title></rect><rect x="0" y="392.58" width="46" height="6.17" fill="#b88533"><title>34.1 % Fe</title></rect><rect x="0" y="398.35" width="46" height="6.17" fill="#bb8938"><title>33.0 % Fe</title></rect><rect x="0" y="404.12" width="46" height="6.17" fill="#bd8c3d"><title>32.0 % Fe</title></rect><rect x="0" y="409.90" width="46" height="6.17" fill="#ba8736"><title>33.5 % Fe</title></rect><rect x="0" y="415.67" width="46" height="6.17" fill="#b88431"><title>34.4 % Fe</title></rect><rect x="0" y="421.44" width="46" height="6.17" fill="#ba8837"><title>33.3 % Fe</title></rect><rect x="0" y="427.22" width="46" height="6.17" fill="#b98634"><title>33.8 % Fe</title></rect><rect x="0" y="432.99" width="46" height="6.17" fill="#b98634"><title>33.9 % Fe</title></rect><rect x="0" y="438.76" width="46" height="6.17" fill="#bd8c3d"><title>32.0 % Fe</title></rect><rect x="0" y="444.54" width="46" height="6.17" fill="#be8d3f"><title>31.6 % Fe</title></rect><rect x="0" y="450.31" width="46" height="6.17" fill="#b3792e"><title>36.4 % Fe</title></rect><rect x="0" y="456.08" width="46" height="6.17" fill="#b98634"><title>33.9 % Fe</title></rect><rect x="0" y="461.86" width="46" height="6.17" fill="#c59951"><title>27.9 % Fe</title></rect><rect x="0" y="467.63" width="46" height="6.17" fill="#b57e2e"><title>35.7 % Fe</title></rect><rect x="0" y="473.40" width="46" height="6.17" fill="#b88532"><title>34.3 % Fe</title></rect><rect x="0" y="479.18" width="46" height="6.17" fill="#ba8736"><title>33.5 % Fe</title></rect><rect x="0" y="484.95" width="46" height="6.17" fill="#ba8837"><title>33.2 % Fe</title></rect><rect x="0" y="490.72" width="46" height="6.17" fill="#b78330"><title>34.7 % Fe</title></rect><rect x="0" y="496.49" width="46" height="6.17" fill="#bb8939"><title>32.8 % Fe</title></rect><rect x="0" y="502.27" width="46" height="6.17" fill="#c09145"><title>30.3 % Fe</title></rect><rect x="0" y="508.04" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="513.81" width="46" height="6.17" fill="#e0d2b8"><title>1.7 % Fe</title></rect><rect x="0" y="519.59" width="46" height="6.17" fill="#e0d2b6"><title>2.1 % Fe</title></rect><rect x="0" y="525.36" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="531.13" width="46" height="6.17" fill="#e1d3b9"><title>1.4 % Fe</title></rect><rect x="0" y="536.91" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="542.68" width="46" height="6.17" fill="#e0d1b5"><title>2.5 % Fe</title></rect><rect x="0" y="548.45" width="46" height="6.17" fill="#e1d3b8"><title>1.5 % Fe</title></rect><rect x="0" y="554.23" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect></g><rect x="0" y="0" width="46" height="560" fill="none" class="cadre"/><line x1="46" x2="52" y1="0.0" y2="0.0" class="tick"/><text x="56" y="4.0" class="tlab">0 m</text><line x1="46" x2="52" y1="85.5" y2="85.5" class="tick"/><text x="56" y="89.5" class="tlab">20 m</text><line x1="46" x2="52" y1="171.1" y2="171.1" class="tick"/><text x="56" y="175.1" class="tlab">40 m</text><line x1="46" x2="52" y1="256.6" y2="256.6" class="tick"/><text x="56" y="260.6" class="tlab">60 m</text><line x1="46" x2="52" y1="342.1" y2="342.1" class="tick"/><text x="56" y="346.1" class="tlab">80 m</text><line x1="46" x2="52" y1="427.6" y2="427.6" class="tick"/><text x="56" y="431.6" class="tlab">100 m</text><line x1="46" x2="52" y1="513.2" y2="513.2" class="tick"/><text x="56" y="517.2" class="tlab">120 m</text></svg>
-        <figcaption id="carotte-legende">
-          <strong>Un forage, 97 échantillons</strong>
-          Teneur en fer de chaque échantillon, du plus pauvre au plus riche.
-          <span class="rampe" aria-hidden="true"></span>
-          <span class="rampe-lab"><span>1 %</span><span>44 % Fe</span></span>
-          <br>Jeu de démonstration de l'étude de cas « 30 forages ».
-        </figcaption>
+
+      <figure class="carte-forage" style="margin:0" aria-describedby="carotte-legende">
+        <div class="haut">
+          <svg class="carotte" viewBox="-2 -8 102 576" role="img" aria-labelledby="carotte-titre"><title id="carotte-titre">Teneurs en fer le long d'un forage de 131 m (jeu de démonstration)</title><g><rect x="0" y="0.00" width="46" height="6.17" fill="#e0d2b7"><title>1.8 % Fe</title></rect><rect x="0" y="5.77" width="46" height="6.17" fill="#e0d2b7"><title>1.8 % Fe</title></rect><rect x="0" y="11.55" width="46" height="6.17" fill="#e1d3b9"><title>1.2 % Fe</title></rect><rect x="0" y="17.32" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="23.09" width="46" height="6.17" fill="#e0d0b3"><title>3.0 % Fe</title></rect><rect x="0" y="28.87" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="34.64" width="46" height="6.17" fill="#e1d3b9"><title>1.3 % Fe</title></rect><rect x="0" y="40.41" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="46.19" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="51.96" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="57.73" width="46" height="6.17" fill="#e1d4ba"><title>1.1 % Fe</title></rect><rect x="0" y="63.51" width="46" height="6.17" fill="#e0d0b2"><title>3.2 % Fe</title></rect><rect x="0" y="69.28" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect><rect x="0" y="75.05" width="46" height="6.17" fill="#dfceae"><title>4.4 % Fe</title></rect><rect x="0" y="80.82" width="46" height="6.17" fill="#e0d1b4"><title>2.7 % Fe</title></rect><rect x="0" y="86.60" width="46" height="6.17" fill="#e0d1b4"><title>2.6 % Fe</title></rect><rect x="0" y="92.37" width="46" height="6.17" fill="#dfcdad"><title>4.8 % Fe</title></rect><rect x="0" y="98.14" width="46" height="6.17" fill="#e1d3b8"><title>1.6 % Fe</title></rect><rect x="0" y="103.92" width="46" height="6.17" fill="#e0d2b7"><title>1.9 % Fe</title></rect><rect x="0" y="109.69" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect><rect x="0" y="115.46" width="46" height="6.17" fill="#dfceae"><title>4.4 % Fe</title></rect><rect x="0" y="121.24" width="46" height="6.17" fill="#e0d2b7"><title>1.7 % Fe</title></rect><rect x="0" y="127.01" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="132.78" width="46" height="6.17" fill="#e0d1b5"><title>2.3 % Fe</title></rect><rect x="0" y="138.56" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="144.33" width="46" height="6.17" fill="#e0d1b4"><title>2.6 % Fe</title></rect><rect x="0" y="150.10" width="46" height="6.17" fill="#e0d2b6"><title>2.1 % Fe</title></rect><rect x="0" y="155.88" width="46" height="6.17" fill="#e1d3b8"><title>1.5 % Fe</title></rect><rect x="0" y="161.65" width="46" height="6.17" fill="#e0d0b3"><title>3.0 % Fe</title></rect><rect x="0" y="167.42" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="173.20" width="46" height="6.17" fill="#e0d1b5"><title>2.5 % Fe</title></rect><rect x="0" y="178.97" width="46" height="6.17" fill="#e1d3b9"><title>1.3 % Fe</title></rect><rect x="0" y="184.74" width="46" height="6.17" fill="#decba9"><title>6.0 % Fe</title></rect><rect x="0" y="190.52" width="46" height="6.17" fill="#e0d2b8"><title>1.7 % Fe</title></rect><rect x="0" y="196.29" width="46" height="6.17" fill="#e1d3b9"><title>1.2 % Fe</title></rect><rect x="0" y="202.06" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="207.84" width="46" height="6.17" fill="#dfcfb1"><title>3.7 % Fe</title></rect><rect x="0" y="213.61" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="219.38" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="225.15" width="46" height="6.17" fill="#e0d1b5"><title>2.5 % Fe</title></rect><rect x="0" y="230.93" width="46" height="6.17" fill="#e0d1b4"><title>2.6 % Fe</title></rect><rect x="0" y="236.70" width="46" height="6.17" fill="#e0d0b3"><title>2.9 % Fe</title></rect><rect x="0" y="242.47" width="46" height="6.17" fill="#e1d3b8"><title>1.6 % Fe</title></rect><rect x="0" y="248.25" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect><rect x="0" y="254.02" width="46" height="6.17" fill="#e0d2b7"><title>2.0 % Fe</title></rect><rect x="0" y="259.79" width="46" height="6.17" fill="#e0d1b5"><title>2.4 % Fe</title></rect><rect x="0" y="265.57" width="46" height="6.17" fill="#e0d1b5"><title>2.4 % Fe</title></rect><rect x="0" y="271.34" width="46" height="6.17" fill="#ac692c"><title>38.8 % Fe</title></rect><rect x="0" y="277.11" width="46" height="6.17" fill="#ac682c"><title>38.9 % Fe</title></rect><rect x="0" y="282.89" width="46" height="6.17" fill="#b1752d"><title>36.9 % Fe</title></rect><rect x="0" y="288.66" width="46" height="6.17" fill="#ad692c"><title>38.7 % Fe</title></rect><rect x="0" y="294.43" width="46" height="6.17" fill="#a9622b"><title>39.9 % Fe</title></rect><rect x="0" y="300.21" width="46" height="6.17" fill="#b88532"><title>34.4 % Fe</title></rect><rect x="0" y="305.98" width="46" height="6.17" fill="#b3792e"><title>36.4 % Fe</title></rect><rect x="0" y="311.75" width="46" height="6.17" fill="#9e4428"><title>44.2 % Fe</title></rect><rect x="0" y="317.53" width="46" height="6.17" fill="#a24f29"><title>42.6 % Fe</title></rect><rect x="0" y="323.30" width="46" height="6.17" fill="#c19246"><title>30.2 % Fe</title></rect><rect x="0" y="329.07" width="46" height="6.17" fill="#bc8b3c"><title>32.2 % Fe</title></rect><rect x="0" y="334.85" width="46" height="6.17" fill="#b98634"><title>33.9 % Fe</title></rect><rect x="0" y="340.62" width="46" height="6.17" fill="#be8e40"><title>31.3 % Fe</title></rect><rect x="0" y="346.39" width="46" height="6.17" fill="#b57e2e"><title>35.7 % Fe</title></rect><rect x="0" y="352.16" width="46" height="6.17" fill="#b98735"><title>33.6 % Fe</title></rect><rect x="0" y="357.94" width="46" height="6.17" fill="#bb8a3a"><title>32.6 % Fe</title></rect><rect x="0" y="363.71" width="46" height="6.17" fill="#bd8c3d"><title>32.0 % Fe</title></rect><rect x="0" y="369.48" width="46" height="6.17" fill="#b37b2e"><title>36.2 % Fe</title></rect><rect x="0" y="375.26" width="46" height="6.17" fill="#be8d40"><title>31.5 % Fe</title></rect><rect x="0" y="381.03" width="46" height="6.17" fill="#b98633"><title>34.0 % Fe</title></rect><rect x="0" y="386.80" width="46" height="6.17" fill="#c19247"><title>29.9 % Fe</title></rect><rect x="0" y="392.58" width="46" height="6.17" fill="#b88533"><title>34.1 % Fe</title></rect><rect x="0" y="398.35" width="46" height="6.17" fill="#bb8938"><title>33.0 % Fe</title></rect><rect x="0" y="404.12" width="46" height="6.17" fill="#bd8c3d"><title>32.0 % Fe</title></rect><rect x="0" y="409.90" width="46" height="6.17" fill="#ba8736"><title>33.5 % Fe</title></rect><rect x="0" y="415.67" width="46" height="6.17" fill="#b88431"><title>34.4 % Fe</title></rect><rect x="0" y="421.44" width="46" height="6.17" fill="#ba8837"><title>33.3 % Fe</title></rect><rect x="0" y="427.22" width="46" height="6.17" fill="#b98634"><title>33.8 % Fe</title></rect><rect x="0" y="432.99" width="46" height="6.17" fill="#b98634"><title>33.9 % Fe</title></rect><rect x="0" y="438.76" width="46" height="6.17" fill="#bd8c3d"><title>32.0 % Fe</title></rect><rect x="0" y="444.54" width="46" height="6.17" fill="#be8d3f"><title>31.6 % Fe</title></rect><rect x="0" y="450.31" width="46" height="6.17" fill="#b3792e"><title>36.4 % Fe</title></rect><rect x="0" y="456.08" width="46" height="6.17" fill="#b98634"><title>33.9 % Fe</title></rect><rect x="0" y="461.86" width="46" height="6.17" fill="#c59951"><title>27.9 % Fe</title></rect><rect x="0" y="467.63" width="46" height="6.17" fill="#b57e2e"><title>35.7 % Fe</title></rect><rect x="0" y="473.40" width="46" height="6.17" fill="#b88532"><title>34.3 % Fe</title></rect><rect x="0" y="479.18" width="46" height="6.17" fill="#ba8736"><title>33.5 % Fe</title></rect><rect x="0" y="484.95" width="46" height="6.17" fill="#ba8837"><title>33.2 % Fe</title></rect><rect x="0" y="490.72" width="46" height="6.17" fill="#b78330"><title>34.7 % Fe</title></rect><rect x="0" y="496.49" width="46" height="6.17" fill="#bb8939"><title>32.8 % Fe</title></rect><rect x="0" y="502.27" width="46" height="6.17" fill="#c09145"><title>30.3 % Fe</title></rect><rect x="0" y="508.04" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="513.81" width="46" height="6.17" fill="#e0d2b8"><title>1.7 % Fe</title></rect><rect x="0" y="519.59" width="46" height="6.17" fill="#e0d2b6"><title>2.1 % Fe</title></rect><rect x="0" y="525.36" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="531.13" width="46" height="6.17" fill="#e1d3b9"><title>1.4 % Fe</title></rect><rect x="0" y="536.91" width="46" height="6.17" fill="#e1d4ba"><title>1.0 % Fe</title></rect><rect x="0" y="542.68" width="46" height="6.17" fill="#e0d1b5"><title>2.5 % Fe</title></rect><rect x="0" y="548.45" width="46" height="6.17" fill="#e1d3b8"><title>1.5 % Fe</title></rect><rect x="0" y="554.23" width="46" height="6.17" fill="#e0d2b6"><title>2.2 % Fe</title></rect></g><rect x="0" y="0" width="46" height="560" fill="none" class="cadre"/><line x1="46" x2="52" y1="0.0" y2="0.0" class="tick"/><text x="56" y="4.0" class="tlab">0 m</text><line x1="46" x2="52" y1="85.5" y2="85.5" class="tick"/><text x="56" y="89.5" class="tlab">20 m</text><line x1="46" x2="52" y1="171.1" y2="171.1" class="tick"/><text x="56" y="175.1" class="tlab">40 m</text><line x1="46" x2="52" y1="256.6" y2="256.6" class="tick"/><text x="56" y="260.6" class="tlab">60 m</text><line x1="46" x2="52" y1="342.1" y2="342.1" class="tick"/><text x="56" y="346.1" class="tlab">80 m</text><line x1="46" x2="52" y1="427.6" y2="427.6" class="tick"/><text x="56" y="431.6" class="tlab">100 m</text><line x1="46" x2="52" y1="513.2" y2="513.2" class="tick"/><text x="56" y="517.2" class="tlab">120 m</text></svg>
+          <figcaption id="carotte-legende">
+            <h2>Un forage, 97 échantillons</h2>
+            <p>Teneur en fer de chaque échantillon le long d'un forage de 131 m : mon premier terrain d'analyse.</p>
+            <span class="rampe" aria-hidden="true"></span>
+            <span class="rampe-lab"><span>1 %</span><span>44 % Fe</span></span>
+            <p style="margin-top:10px; font-size:12.5px">Jeu de démonstration de l'étude « 30 forages ».</p>
+          </figcaption>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>5</b><span>études de cas publiques, code ouvert</span></div>
+          <div class="stat"><b>541 909</b><span>lignes analysées dans un seul projet</span></div>
+          <div class="stat"><b>Top 6</b><span>en Afrique au concours Datamine 2026</span></div>
+          <div class="stat"><b>3</b><span>stages de terrain, de la carrière au gisement</span></div>
+        </div>
       </figure>
     </div>
+  </div>
 
-    <section id="projets" aria-labelledby="t-projets">
-      <h2 id="t-projets">Études de cas</h2>
-      <p class="intro etroit">Cinq analyses complètes, de la donnée brute à la recommandation. Le code, les données publiques et les résultats sont ouverts : vous pouvez tout vérifier.</p>
+  <div class="atouts">
+    <div class="page">
+      <div class="atout"><span class="rond"><svg class="ic"><use href="#i-nettoyer"/></svg></span><div><h3>Des données fiables</h3><p>Chaque base est contrôlée et nettoyée, et chaque correction est documentée.</p></div></div>
+      <div class="atout"><span class="rond"><svg class="ic"><use href="#i-test"/></svg></span><div><h3>Des conclusions vérifiées</h3><p>Les écarts sont testés statistiquement avant de devenir une recommandation.</p></div></div>
+      <div class="atout"><span class="rond"><svg class="ic"><use href="#i-tdb"/></svg></span><div><h3>Des outils utilisables</h3><p>Tableaux de bord Excel, Power BI ou web que votre équipe utilise sans moi.</p></div></div>
+    </div>
+  </div>
 
-      <article class="projet">
-        <a href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml"><img src="assets/forages.jpg" alt="Comparaison du R² des quatre méthodes d'estimation et répartition JORC des ressources" loading="lazy" width="1200" height="552"></a>
-        <div>
-          <p class="domaine">Mines, estimation de ressources</p>
+  <div class="page">
+    <section class="bloc" id="projets" aria-labelledby="t-projets">
+      <p class="sur-titre">Études de cas</p>
+      <h2 id="t-projets">De la donnée brute à la décision</h2>
+      <p class="intro etroit">Cinq analyses complètes sur des données réelles. Pour chacune : la question posée, ce que j'ai construit et ce que montrent les chiffres. Le code et les données publiques sont ouverts.</p>
+
+      <div class="filtres" role="group" aria-label="Filtrer les études de cas">
+        <button type="button" data-f="tous" aria-pressed="true">Toutes</button>
+        <button type="button" data-f="python" aria-pressed="false">Python</button>
+        <button type="button" data-f="sql" aria-pressed="false">SQL</button>
+        <button type="button" data-f="excel" aria-pressed="false">Excel</button>
+        <button type="button" data-f="dashboard" aria-pressed="false">Tableau de bord</button>
+        <button type="button" data-f="mines" aria-pressed="false">Mines</button>
+      </div>
+
+      <article class="projet" data-t="python mines">
+        <a class="visuel" href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml"><img src="assets/forages.jpg" alt="Comparaison du R² des quatre méthodes d'estimation" loading="lazy" width="1200" height="552"></a>
+        <div class="corps">
+          <div class="tags"><span class="tag mines">Mines</span><span class="tag">Python</span><span class="tag">Machine learning</span><span class="tag">Géostatistique</span><span class="tag">JORC 2012</span></div>
           <h3>Estimer un gisement de fer à partir de 30 forages</h3>
-          <p>Le krigeage lisse les teneurs et sous-estime le minerai riche. J'ai comparé quatre méthodes sur des forages tenus à l'écart, puis classé les ressources selon le code JORC 2012.</p>
-          <div class="chiffre"><b>0,61 → 0,83</b><span>R² de l'estimation, du krigeage ordinaire au stacking Random Forest + XGBoost</span></div>
-          <p class="outils">Python, scikit-learn, XGBoost, PyKrige, Leapfrog Geo, Isatis.neo, Surpac</p>
-          <div class="liens"><a href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml">Lire l'étude et le code</a></div>
+          <p class="resume">Gisement de fer rubané (BIF) du Sud-Cameroun : environ 3 630 m forés et 2 702 analyses XRF validées. Réalisé pendant mon stage chez MuCoTech SARL.</p>
+          <div class="trois">
+            <div><h4>La question</h4><p>Le krigeage lisse les teneurs et sous-estime le minerai riche. Le machine learning fait-il mieux là où personne n'a foré ?</p></div>
+            <div><h4>Ce que j'ai construit</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Modèle géologique 3D à 3 domaines</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Krigeage, Random Forest, XGBoost et stacking, validés sur des forages tenus à l'écart</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Classification des ressources JORC 2012</li></ul></div>
+            <div><h4>Ce que montrent les données</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Le stacking porte le R² de 0,606 à 0,825</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>La silice est la variable qui pilote la teneur en fer</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>58,2 Mt classées en Mesurée + Indiquée</li></ul></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b class="fort">0,825</b><span>R² du stacking (krigeage : 0,606)</span></div>
+            <div class="kpi"><b>3,54 %</b><span>erreur moyenne (RMSE) en Fe</span></div>
+            <div class="kpi"><b>102,1 Mt</b><span>de ressources estimées</span></div>
+            <div class="kpi"><b>31,4 %</b><span>teneur moyenne en fer</span></div>
+          </div>
+          <div class="liens"><a class="btn btn-creux btn-petit" href="https://github.com/emmanuelnoualeu/estimation-fe-krigeage-ml"><svg class="ic"><use href="#i-code"/></svg>Lire l'étude et le code</a></div>
         </div>
       </article>
 
-      <article class="projet">
-        <a href="https://github.com/emmanuelnoualeu/segmentation-clients-rfm"><img src="assets/rfm.jpg" alt="Part des clients et part du chiffre d'affaires pour chaque segment RFM" loading="lazy" width="1200" height="581"></a>
-        <div>
-          <p class="domaine">E-commerce, clients</p>
-          <h3>Segmentation clients RFM : à qui parler, et avec quel message</h3>
-          <p>541 909 lignes de factures d'un grossiste en ligne, nettoyées étape par étape, puis 4 334 clients répartis en 8 segments d'action et suivis par cohorte mensuelle.</p>
-          <div class="chiffre"><b>813 k£</b><span>de chiffre d'affaires porté par 657 clients « à risque », qui n'ont rien commandé depuis plus de 4 mois</span></div>
-          <p class="outils">Python, pandas, analyse de cohortes, courbe de Pareto</p>
-          <div class="liens"><a href="https://github.com/emmanuelnoualeu/segmentation-clients-rfm">Lire l'étude et le code</a></div>
+      <article class="projet" data-t="python">
+        <a class="visuel" href="https://github.com/emmanuelnoualeu/segmentation-clients-rfm"><img src="assets/rfm.jpg" alt="Part des clients et du chiffre d'affaires par segment RFM" loading="lazy" width="1200" height="581"></a>
+        <div class="corps">
+          <div class="tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">Segmentation RFM</span><span class="tag">Cohortes</span><span class="tag">Données publiques UCI</span></div>
+          <h3>Segmentation clients : à qui parler, et avec quel message</h3>
+          <p class="resume">Grossiste en ligne britannique : 541 909 lignes de factures sur 13 mois, 4 334 clients identifiés.</p>
+          <div class="trois">
+            <div><h4>La question</h4><p>Quels clients fidéliser, lesquels relancer, et lesquels laisser partir ?</p></div>
+            <div><h4>Ce que j'ai construit</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Nettoyage en 6 étapes documentées</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Scores RFM et 8 segments d'action</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Rétention par cohorte mensuelle et courbe de Pareto</li></ul></div>
+            <div><h4>Ce que montrent les données</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>26 % des clients font 66 % du chiffre d'affaires</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>657 clients réguliers ont décroché depuis plus de 4 mois</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Moins d'un nouveau client sur quatre revient le mois suivant</li></ul></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b class="fort">813 k£</b><span>de CA porté par les clients « à risque »</span></div>
+            <div class="kpi"><b>66 %</b><span>du CA fait par les Champions</span></div>
+            <div class="kpi"><b>75 %</b><span>du CA fait par 20 % des clients</span></div>
+            <div class="kpi"><b>37 %</b><span>du CA annuel de septembre à novembre</span></div>
+          </div>
+          <div class="liens"><a class="btn btn-creux btn-petit" href="https://github.com/emmanuelnoualeu/segmentation-clients-rfm"><svg class="ic"><use href="#i-code"/></svg>Lire l'étude et le code</a></div>
         </div>
       </article>
 
-      <article class="projet">
-        <a href="projets/supermarche/"><img src="assets/supermarche.jpg" alt="Tableau de bord des ventes avec indicateurs, CA par rayon, tickets par heure et modes de paiement" loading="lazy" width="1200" height="937"></a>
-        <div>
-          <p class="domaine">Commerce de détail, ventes</p>
+      <article class="projet" data-t="sql python dashboard">
+        <a class="visuel" href="projets/supermarche/"><img src="assets/supermarche.jpg" alt="Tableau de bord des ventes de trois supermarchés" loading="lazy" width="1280" height="650"></a>
+        <div class="corps">
+          <div class="tags"><span class="tag">SQL</span><span class="tag">DuckDB</span><span class="tag">Tests statistiques</span><span class="tag">Tableau de bord web</span></div>
           <h3>Ventes de supermarché : quelles décisions les données permettent-elles ?</h3>
-          <p>8 requêtes SQL et 9 tests statistiques sur 3 magasins. La plupart des écarts visibles relèvent du bruit ; un seul signal tient, et la base ne permet pas de calculer la marge réelle.</p>
-          <div class="chiffre"><b>1 sur 9</b><span>écart réellement significatif : le samedi. Les autres ne justifient pas de réallouer le budget.</span></div>
-          <p class="outils">SQL (DuckDB), Python, SciPy, Chart.js</p>
-          <div class="liens"><a href="projets/supermarche/">Ouvrir le tableau de bord</a><a href="https://github.com/emmanuelnoualeu/analyse-ventes-supermarche">Lire l'étude et le code</a></div>
+          <p class="resume">Trois magasins, 1 000 tickets de caisse sur trois mois : rayons, horaires, modes de paiement, carte de fidélité.</p>
+          <div class="trois">
+            <div><h4>La question</h4><p>Quels écarts entre magasins, rayons et horaires justifient vraiment une décision d'investissement ?</p></div>
+            <div><h4>Ce que j'ai construit</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Contrôles qualité et 8 requêtes SQL (fenêtres, CTE)</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>9 tests statistiques sur les écarts observés</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Tableau de bord filtrable par magasin, mois et client</li></ul></div>
+            <div><h4>Ce que montrent les données</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Seul le samedi ressort vraiment (p = 0,03)</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>La marge enregistrée est la taxe recopiée : rentabilité non mesurable</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Les membres de la carte ne dépensent pas plus</li></ul></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b>1 000</b><span>tickets contrôlés</span></div>
+            <div class="kpi"><b>9</b><span>écarts testés</span></div>
+            <div class="kpi"><b class="fort">1</b><span>seul signal significatif</span></div>
+            <div class="kpi"><b>4,76 %</b><span>marge figée sur toutes les lignes</span></div>
+          </div>
+          <div class="liens">
+            <a class="btn btn-plein btn-petit" href="projets/supermarche/"><svg class="ic"><use href="#i-tdb"/></svg>Ouvrir le tableau de bord</a>
+            <a class="btn btn-creux btn-petit" href="https://github.com/emmanuelnoualeu/analyse-ventes-supermarche"><svg class="ic"><use href="#i-code"/></svg>Lire l'étude et le code</a>
+          </div>
         </div>
       </article>
 
-      <article class="projet">
-        <a href="https://github.com/emmanuelnoualeu/tableau-de-bord-excel"><img src="assets/excel.jpg" alt="Classeur Excel : indicateurs, rentabilité par catégorie et par tranche de remise" loading="lazy" width="1200" height="743"></a>
-        <div>
-          <p class="domaine">Distribution, rentabilité</p>
+      <article class="projet" data-t="excel dashboard">
+        <a class="visuel" href="https://github.com/emmanuelnoualeu/tableau-de-bord-excel"><img src="assets/excel.jpg" alt="Classeur Excel de rentabilité : indicateurs et tableaux de synthèse" loading="lazy" width="1284" height="520"></a>
+        <div class="corps">
+          <div class="tags"><span class="tag">Excel</span><span class="tag">SUMIFS</span><span class="tag">Listes déroulantes</span><span class="tag">Mise en forme conditionnelle</span></div>
           <h3>Tableau de bord Excel : où l'entreprise perd-elle de l'argent ?</h3>
-          <p>Un classeur piloté par deux listes déroulantes, avec 16 898 formules et aucune valeur saisie à la main, sur 8 399 lignes de commande d'un distributeur canadien.</p>
-          <div class="chiffre"><b>35 % / 8 %</b><span>Le mobilier fait 35 % du chiffre d'affaires mais seulement 8 % du profit ; les tables sont vendues à perte.</span></div>
-          <p class="outils">Excel : SUMIFS, COUNTIFS, validation de données, mise en forme conditionnelle, graphiques dynamiques</p>
-          <div class="liens"><a href="https://github.com/emmanuelnoualeu/tableau-de-bord-excel/raw/main/tableau_de_bord_rentabilite.xlsx">Télécharger le classeur</a><a href="https://github.com/emmanuelnoualeu/tableau-de-bord-excel">Lire l'étude</a></div>
+          <p class="resume">Distributeur canadien de fournitures et de mobilier de bureau : 8 399 lignes de commande sur 4 ans.</p>
+          <div class="trois">
+            <div><h4>La question</h4><p>Le distributeur vend 14,9 M$ mais garde à peine 10 % de marge. Où part le profit ?</p></div>
+            <div><h4>Ce que j'ai construit</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Classeur piloté par deux listes déroulantes</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>16 898 formules, aucune valeur saisie à la main</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Graphiques et alertes qui se mettent à jour</li></ul></div>
+            <div><h4>Ce que montrent les données</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Le mobilier fait 35 % du CA mais 8 % du profit</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Tables et bibliothèques sont vendues à perte</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Au-delà de 5 % de remise, la marge chute de 12 % à 8 %</li></ul></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b>14,9 M$</b><span>de ventes analysées</span></div>
+            <div class="kpi"><b>10,2 %</b><span>de marge nette</span></div>
+            <div class="kpi"><b class="fort">50,8 %</b><span>des lignes vendues à perte</span></div>
+            <div class="kpi"><b>−133 k$</b><span>sur les tables et bibliothèques</span></div>
+          </div>
+          <div class="liens">
+            <a class="btn btn-plein btn-petit" href="https://github.com/emmanuelnoualeu/tableau-de-bord-excel/raw/main/tableau_de_bord_rentabilite.xlsx"><svg class="ic"><use href="#i-dl"/></svg>Télécharger le classeur</a>
+            <a class="btn btn-creux btn-petit" href="https://github.com/emmanuelnoualeu/tableau-de-bord-excel"><svg class="ic"><use href="#i-code"/></svg>Lire l'étude</a>
+          </div>
         </div>
       </article>
 
-      <article class="projet">
-        <a href="projets/metaux/"><img src="assets/metaux.jpg" alt="Explorateur interactif du prix du minerai de fer de 1980 à 2017" loading="lazy" width="1200" height="843"></a>
-        <div>
-          <p class="domaine">Matières premières, séries temporelles</p>
+      <article class="projet" data-t="python mines dashboard">
+        <a class="visuel" href="projets/metaux/"><img src="assets/metaux.jpg" alt="Explorateur interactif du prix du minerai de fer" loading="lazy" width="1280" height="760"></a>
+        <div class="corps">
+          <div class="tags"><span class="tag mines">Mines</span><span class="tag">Python</span><span class="tag">Séries temporelles</span><span class="tag">Explorateur web</span><span class="tag">Données FMI</span></div>
           <h3>37 ans de prix des métaux, lus par un ingénieur minier</h3>
-          <p>Prix mensuels du FMI pour dix matières premières : super-cycle, volatilité, corrélations, et ce qu'ils impliquent pour le prix de référence d'une étude de faisabilité.</p>
-          <div class="chiffre"><b>−78 %</b><span>pour le minerai de fer entre février 2011 (187 $/t) et décembre 2015 (41 $/t)</span></div>
-          <p class="outils">Python, pandas, analyse de volatilité, Chart.js</p>
-          <div class="liens"><a href="projets/metaux/">Ouvrir l'explorateur</a><a href="https://github.com/emmanuelnoualeu/marche-metaux-analyse">Lire l'étude et le code</a></div>
+          <p class="resume">Prix mensuels du FMI pour dix matières premières de 1980 à 2017, et prix de l'or jusqu'en 2026.</p>
+          <div class="trois">
+            <div><h4>La question</h4><p>Quel prix du minerai de fer retenir dans une étude de faisabilité, et avec quel risque ?</p></div>
+            <div><h4>Ce que j'ai construit</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Indices en base 100 et lecture des cycles</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Volatilité par période et corrélations</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Explorateur interactif par métal et par période</li></ul></div>
+            <div><h4>Ce que montrent les données</h4><ul class="coches">
+              <li><svg class="ic"><use href="#i-ok"/></svg>Le fer est multiplié par 13,5 en 11 ans, puis chute de 78 %</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Sa volatilité passe de 9 % à 35 % avec le prix spot</li>
+              <li><svg class="ic"><use href="#i-ok"/></svg>Une étude doit tester le prix au plus bas historique, pas à la moyenne</li></ul></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b class="fort">−78 %</b><span>entre 2011 et 2015 pour le fer</span></div>
+            <div class="kpi"><b>×13,5</b><span>pour le fer de 2000 à 2011</span></div>
+            <div class="kpi"><b>35 %</b><span>de volatilité annuelle depuis 2005</span></div>
+            <div class="kpi"><b>71 $/t</b><span>prix moyen du fer, 2014 à 2017</span></div>
+          </div>
+          <div class="liens">
+            <a class="btn btn-plein btn-petit" href="projets/metaux/"><svg class="ic"><use href="#i-tdb"/></svg>Ouvrir l'explorateur</a>
+            <a class="btn btn-creux btn-petit" href="https://github.com/emmanuelnoualeu/marche-metaux-analyse"><svg class="ic"><use href="#i-code"/></svg>Lire l'étude et le code</a>
+          </div>
         </div>
       </article>
+
+      <div class="appel">
+        <div><h3>Vous avez des données à faire parler ?</h3><p>Décrivez-moi votre besoin en quelques lignes : je vous réponds sous 48 heures avec une proposition de démarche.</p></div>
+        <div class="actions">
+          <a class="btn btn-wa" href="https://wa.me/237679617770" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>WhatsApp</a>
+          <a class="btn btn-plein" href="mailto:emmanuelnoualeu@gmail.com?subject=Projet%20d'analyse%20de%20donn%C3%A9es"><svg class="ic"><use href="#i-mail"/></svg>E-mail</a>
+        </div>
+      </div>
     </section>
 
-    <section id="services" aria-labelledby="t-services">
+    <section class="bloc" id="services" aria-labelledby="t-services">
+      <p class="sur-titre">Services</p>
       <h2 id="t-services">Ce que je peux faire pour vous</h2>
       <p class="intro etroit">Des missions courtes et cadrées, avec un livrable clair à la fin de chacune.</p>
       <div class="services">
-        <div class="service">
-          <h3>Nettoyer et fiabiliser vos données</h3>
-          <p>Fichiers Excel ou CSV hétérogènes, doublons, valeurs manquantes, incohérences : je reconstruis une base propre et je documente chaque correction.</p>
-          <span class="livrable">Livrable : base nettoyée et journal des corrections</span>
-        </div>
-        <div class="service">
-          <h3>Analyser et tester avant de recommander</h3>
-          <p>Ventes, clients, production : je sépare les vrais écarts du bruit avant de vous conseiller, pour que vos décisions reposent sur des faits.</p>
-          <span class="livrable">Livrable : rapport d'analyse avec recommandations chiffrées</span>
-        </div>
-        <div class="service">
-          <h3>Construire des tableaux de bord</h3>
-          <p>Classeurs Excel automatisés ou tableaux de bord web interactifs, que votre équipe peut utiliser sans moi.</p>
-          <span class="livrable">Livrable : classeur ou page web, avec mode d'emploi</span>
-        </div>
-        <div class="service">
-          <h3>Données minières et géologiques</h3>
-          <p>Bases de forage, contrôle qualité des analyses, statistiques et variographie, estimation des teneurs par krigeage et machine learning, modèles 3D.</p>
-          <span class="livrable">Livrable : modèle, figures et note technique</span>
-        </div>
+        <div class="service"><span class="rond"><svg class="ic"><use href="#i-nettoyer"/></svg></span><h3>Nettoyer et fiabiliser vos données</h3><p>Fichiers Excel ou CSV disparates, doublons, valeurs manquantes : je reconstruis une base propre.</p><span class="livrable">Livrable : base nettoyée et journal des corrections</span></div>
+        <div class="service"><span class="rond"><svg class="ic"><use href="#i-test"/></svg></span><h3>Analyser avant de décider</h3><p>Ventes, clients, production : je sépare les vrais écarts du bruit avant de vous conseiller.</p><span class="livrable">Livrable : rapport d'analyse et recommandations chiffrées</span></div>
+        <div class="service"><span class="rond"><svg class="ic"><use href="#i-tdb"/></svg></span><h3>Construire des tableaux de bord</h3><p>Classeurs Excel automatisés, rapports Power BI ou tableaux de bord web interactifs.</p><span class="livrable">Livrable : tableau de bord et mode d'emploi</span></div>
+        <div class="service"><span class="rond"><svg class="ic"><use href="#i-couches"/></svg></span><h3>Données minières et géologiques</h3><p>Bases de forage, contrôle qualité des analyses, variographie, estimation des teneurs, modèles 3D.</p><span class="livrable">Livrable : modèle, figures et note technique</span></div>
+        <div class="service"><span class="rond"><svg class="ic"><use href="#i-cible"/></svg></span><h3>Segmenter vos clients</h3><p>Identifier vos meilleurs clients et ceux qui décrochent, pour cibler vos relances.</p><span class="livrable">Livrable : fichier de segments prêt pour votre CRM</span></div>
+        <div class="service"><span class="rond"><svg class="ic"><use href="#i-former"/></svg></span><h3>Former vos équipes</h3><p>Instituteur diplômé (CAPIEM) avant d'être ingénieur : j'explique Excel, l'analyse de données et les logiciels miniers simplement.</p><span class="livrable">Livrable : séances pratiques et supports</span></div>
       </div>
     </section>
 
-    <section aria-labelledby="t-methode">
-      <h2 id="t-methode">Comment se déroule une mission</h2>
-      <p class="intro etroit">Le même déroulé pour chaque projet, pour que vous sachiez à tout moment où nous en sommes.</p>
+    <section class="bloc" aria-labelledby="t-methode">
+      <p class="sur-titre">Méthode</p>
+      <h2 id="t-methode">Quatre étapes, à chaque mission</h2>
+      <p class="intro etroit">Vous savez à tout moment où en est le travail et ce qui reste à faire.</p>
       <ol class="etapes">
-        <li><h3>Cadrer</h3><p>Un échange pour fixer la question à trancher, les données disponibles et le livrable attendu.</p></li>
-        <li><h3>Fiabiliser</h3><p>Contrôle et nettoyage des données ; je vous signale tout de suite ce qui limite l'analyse.</p></li>
-        <li><h3>Analyser</h3><p>Exploration, tests statistiques ou modélisation, avec des points d'étape partagés.</p></li>
-        <li><h3>Livrer</h3><p>Tableau de bord, rapport et recommandations, puis une séance pour vous les présenter.</p></li>
+        <li><h3>Cadrer</h3><p>On fixe la décision à prendre, les données disponibles et le livrable attendu.</p><small>Échange de 20 minutes</small></li>
+        <li><h3>Fiabiliser</h3><p>Contrôle et nettoyage ; je signale tout de suite ce qui limite l'analyse.</p><small>Excel, Python, SQL</small></li>
+        <li><h3>Analyser</h3><p>Exploration, tests statistiques ou modélisation, avec des points d'étape.</p><small>Python, statistiques, ML</small></li>
+        <li><h3>Livrer</h3><p>Tableau de bord, rapport et recommandations, présentés en séance.</p><small>Excel, Power BI, web</small></li>
       </ol>
     </section>
 
-    <section id="parcours" aria-labelledby="t-parcours">
+    <section class="bloc" id="parcours" aria-labelledby="t-parcours">
       <div class="parcours">
-        <div>
-          <h2 id="t-parcours">Parcours</h2>
-          <p class="etroit" style="color: var(--encre-2); margin: 0;">Ingénieur de conception en ingénierie minière et traitement des minerais, j'ai appris l'analyse de données sur des forages, des cartes et des analyses de laboratoire, là où une erreur de lecture coûte cher. J'applique aujourd'hui la même rigueur à des données de ventes, de clients et de marchés.</p>
-          <ul class="jalons">
-            <li><span class="quand">2021-2026</span><div><strong>ENSMIP, Université de Maroua</strong><span class="det">Diplôme d'ingénieur, mention A. Mémoire noté 17,62/20 : estimation de ressources par géostatistique et machine learning.</span></div></li>
-            <li><span class="quand">Févr.-juin 2026</span><div><strong>Ingénieur stagiaire, MuCoTech SARL, Yaoundé</strong><span class="det">Modèle géologique 3D et estimation des ressources d'un gisement de fer : 30 forages, 2 702 analyses XRF validées, inventaire classé JORC 2012.</span></div></li>
-            <li><span class="quand">Mai-juil. 2025</span><div><strong>Technicien stagiaire, HydroGeoSoil Solutions, Extrême-Nord</strong><span class="det">4 profils électriques et 4 forages carottés (80 m) sur des carrières de granite ; description des carottes et contrôle qualité des échantillons.</span></div></li>
-            <li><span class="quand">Août-sept. 2024</span><div><strong>Stagiaire, MIRECAM Ltd, Yaoundé</strong><span class="det">Cartographie géologique et topographique de la carrière de Ndogo sous ArcGIS et QGIS, utilisée par l'exploitant pour planifier l'extraction.</span></div></li>
-            <li><span class="quand">2025-2026</span><div><strong>Distinctions et formations</strong><span class="det">Classé parmi les 6 premiers en Afrique au concours Datamine (2026) ; analyse et visualisation de données avec Excel et Power BI (Eureka Services, 2025) ; formation Whittle (EMA, 2025) ; formation en intelligence artificielle (MINRESI).</span></div></li>
-          </ul>
-          <div class="boite-outils">
-            <div><h3>Analyse et données</h3><p>Python (pandas, scikit-learn, XGBoost, SciPy), SQL, Excel avancé</p></div>
-            <div><h3>Visualisation et SIG</h3><p>Power BI, Matplotlib, Chart.js, tableaux de bord Excel et web, ArcGIS, QGIS</p></div>
-            <div><h3>Logiciels miniers</h3><p>Leapfrog Geo, Isatis.neo, Surpac, Datamine, Whittle</p></div>
+        <div class="gauche">
+          <p class="sur-titre">Parcours</p>
+          <h2 id="t-parcours">Du terrain minier à l'analyse de données</h2>
+          <p class="intro">Ingénieur de conception en ingénierie minière et traitement des minerais, j'ai appris à lire des données là où une erreur se paie en tonnes : forages, analyses de laboratoire, cartes. J'applique aujourd'hui la même rigueur aux données de ventes, de clients et de marchés.</p>
+          <a class="btn btn-creux" href="assets/cv-emmanuel-noualeu.pdf"><svg class="ic"><use href="#i-dl"/></svg>Télécharger mon CV</a>
+        </div>
+        <ol class="frise">
+          <li><span class="quand">Février - juin 2026</span><h3>Ingénieur stagiaire, modélisation et estimation des ressources</h3><div class="org">MuCoTech SARL, Yaoundé</div><p>Modèle géologique 3D d'un gisement de fer (30 forages, 2 702 analyses XRF validées), estimation par krigeage et machine learning, inventaire JORC 2012 ; rapports sous Excel, Power BI et Python.</p></li>
+          <li><span class="quand">2021 - 2026</span><h3>Diplôme d'ingénieur de conception, mention A</h3><div class="org">ENSMIP, Université de Maroua</div><p>Ingénierie minière et traitement des minerais. 16,67/20, mémoire noté 17,62/20 sur l'estimation de ressources par géostatistique et machine learning.</p></li>
+          <li><span class="quand">Mai - juillet 2025</span><h3>Technicien stagiaire, géophysique et sondages</h3><div class="org">HydroGeoSoil Solutions Ltd, Extrême-Nord</div><p>4 profils électriques et 4 forages carottés (80 m) sur des carrières de granite ; description des carottes, échantillonnage et contrôle qualité.</p></li>
+          <li><span class="quand">Août - septembre 2024</span><h3>Stagiaire, SIG et planification minière</h3><div class="org">MIRECAM Ltd, carrière de Ndogo, Yaoundé</div><p>Cartographie géologique et topographique sous ArcGIS et QGIS, utilisée par l'exploitant pour planifier l'extraction.</p></li>
+          <li><span class="quand">2019 - 2020</span><h3>CAPIEM, enseignement maternel et primaire</h3><div class="org">ENIEG d'Édéa</div><p>Formation d'instituteur et pratique de classe : la base de ma façon d'expliquer simplement des résultats techniques.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="bloc" id="competences" aria-labelledby="t-comp">
+      <p class="sur-titre">Compétences</p>
+      <h2 id="t-comp">Les outils de l'analyse, et ceux du terrain</h2>
+      <p class="intro etroit">Chaque outil listé ici est utilisé dans au moins une des études de cas ou un de mes stages.</p>
+      <div class="competences">
+        <div class="panneau">
+          <h3>Outils</h3>
+          <div class="outil"><b>Python</b><span>pandas, NumPy, SciPy, scikit-learn, XGBoost, matplotlib</span></div>
+          <div class="outil"><b>SQL</b><span>Requêtes analytiques, fonctions de fenêtrage, CTE, DuckDB</span></div>
+          <div class="outil"><b>Excel</b><span>SUMIFS, INDEX/MATCH, tableaux structurés, tableaux de bord dynamiques</span></div>
+          <div class="outil"><b>Power BI</b><span>Rapports et visualisations (formation Eureka Services, 2025)</span></div>
+          <div class="outil"><b>Statistiques</b><span>Tests d'hypothèses, séries temporelles, segmentation, géostatistique</span></div>
+          <div class="outil"><b>Logiciels miniers</b><span>Leapfrog Geo, Isatis.neo, GEOVIA Surpac, Datamine, Whittle</span></div>
+          <div class="outil"><b>SIG</b><span>ArcGIS, QGIS</span></div>
+          <div class="outil"><b>Collaboration</b><span>Git et GitHub, Jupyter</span></div>
+        </div>
+        <div class="pile">
+          <div class="panneau">
+            <h3>Langues</h3>
+            <div class="ligne"><span>Français</span><span>Courant</span></div>
+            <div class="ligne"><span>Anglais</span><span>Intermédiaire, lecture technique</span></div>
           </div>
-          <p style="margin-top: 28px;"><a class="btn creux" href="assets/cv-emmanuel-noualeu.pdf">Télécharger mon CV (PDF)</a></p>
+          <div class="panneau">
+            <h3>Distinctions et formations</h3>
+            <div class="certif"><span class="an">2026</span><span>Concours Datamine : top 6 en Afrique<small>avec attestation</small></span></div>
+            <div class="certif"><span class="an">2025</span><span>Analyse et visualisation de données avec Excel et Power BI<small>Eureka Services</small></span></div>
+            <div class="certif"><span class="an">2025</span><span>Planification minière avec Whittle<small>Exploitation Minière en Afrique (EMA)</small></span></div>
+            <div class="certif"><span class="an">–</span><span>Intelligence artificielle<small>MINRESI</small></span></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="contact" aria-labelledby="t-contact">
-      <h2 id="t-contact">Parlons de vos données</h2>
-      <p class="intro etroit">Décrivez votre besoin en trois lignes : le type de données, leur volume, et la décision que vous devez prendre. Je vous réponds sous 48 heures avec une proposition de démarche.</p>
-      <a class="btn plein" href="mailto:emmanuelnoualeu@gmail.com?subject=Projet%20d'analyse%20de%20donn%C3%A9es">Écrire un e-mail</a>
-      <div class="canaux">
-        <div class="canal"><span>E-mail</span><a href="mailto:emmanuelnoualeu@gmail.com">emmanuelnoualeu@gmail.com</a></div>
-        <div class="canal"><span>LinkedIn</span><a href="https://www.linkedin.com/in/emmanuel-noualeu-b78bba24b/">emmanuel-noualeu</a></div>
-        <div class="canal"><span>Upwork</span><a href="https://www.upwork.com/freelancers/~0146b1a5dfeefdd395">Profil freelance</a></div>
-        <div class="canal"><span>GitHub</span><a href="https://github.com/emmanuelnoualeu">emmanuelnoualeu</a></div>
-        <div class="canal"><span>Téléphone</span><a href="tel:+237696699747">+237 696 699 747</a><br><a href="tel:+237679617770">+237 679 617 770 (WhatsApp)</a></div>
+    <section class="pourquoi" aria-labelledby="t-pourquoi">
+      <div>
+        <p class="sur-titre">Pourquoi me confier vos données</p>
+        <h2 id="t-pourquoi">La rigueur de l'ingénieur, la clarté du pédagogue</h2>
+        <p>Faire un graphique est facile. Savoir si l'écart qu'il montre est réel, et l'expliquer à ceux qui décident, l'est beaucoup moins.</p>
+        <div class="actions">
+          <a class="btn btn-wa" href="https://wa.me/237679617770" target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>Écrire sur WhatsApp</a>
+          <a class="btn btn-creux" href="#contact">Tous mes contacts</a>
+        </div>
+      </div>
+      <div class="raisons">
+        <div class="raison"><span class="rond"><svg class="ic"><use href="#i-pioche"/></svg></span><div><h3>Je viens du terrain</h3><p>Forages, carrières, analyses de laboratoire : je sais d'où viennent les données et où elles se trompent.</p></div></div>
+        <div class="raison"><span class="rond"><svg class="ic"><use href="#i-test"/></svg></span><div><h3>Je vérifie avant d'affirmer</h3><p>Chaque conclusion est testée. Si les données ne permettent pas de trancher, je vous le dis.</p></div></div>
+        <div class="raison"><span class="rond"><svg class="ic"><use href="#i-bulle"/></svg></span><div><h3>J'explique simplement</h3><p>Formé à l'enseignement, je rends les résultats clairs pour la direction comme pour les équipes.</p></div></div>
+        <div class="raison"><span class="rond"><svg class="ic"><use href="#i-langue"/></svg></span><div><h3>Je travaille à distance</h3><p>Échanges en français ou en anglais, livrables partagés en ligne, fuseau UTC+1.</p></div></div>
       </div>
     </section>
-  </main>
 
-  <footer>
-    Emmanuel Noualeu, analyste de données et ingénieur minier, Cameroun. Les études de cas utilisent des données publiques, sauf le projet « 30 forages », dont les données réelles sont confidentielles.
-  </footer>
-</div>
+    <section class="bloc" id="english" aria-labelledby="t-en">
+      <p class="sur-titre">In English</p>
+      <div class="anglais" lang="en">
+        <div>
+          <h2 id="t-en" style="font-size: clamp(1.5rem, 2.6vw, 2rem)">Data analyst with a mining engineering background</h2>
+          <p>I clean, check and analyse sales, customer and drilling data, test what really holds statistically, and deliver dashboards and recommendations your team can use. Based in Douala, Cameroon, working remotely (UTC+1).</p>
+          <ul>
+            <li>Python, SQL, Excel, Power BI; statistics and machine learning</li>
+            <li>Case studies: customer segmentation (541,909 rows), retail sales testing, Excel profitability dashboard, metal prices, iron ore resource estimation (R² 0.61 to 0.83)</li>
+            <li>Mining software: Leapfrog Geo, Isatis.neo, Surpac, Datamine (top 6 in Africa, 2026)</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Contact</strong></p>
+          <p style="margin:0 0 6px"><a href="mailto:emmanuelnoualeu@gmail.com">emmanuelnoualeu@gmail.com</a></p>
+          <p style="margin:0 0 6px">WhatsApp: <a href="https://wa.me/237679617770">+237 679 617 770</a></p>
+          <p style="margin:0 0 16px"><a href="https://www.upwork.com/freelancers/~0146b1a5dfeefdd395">Upwork profile</a></p>
+          <a class="btn btn-creux btn-petit" href="assets/cv-emmanuel-noualeu.pdf"><svg class="ic"><use href="#i-dl"/></svg>Resume (French, PDF)</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloc" id="contact" aria-labelledby="t-contact">
+      <div class="contact">
+        <div>
+          <p class="sur-titre">Contact</p>
+          <h2 id="t-contact">Parlons de vos données</h2>
+          <p class="intro">Le type de données, leur volume, et la décision que vous devez prendre : ces trois lignes me suffisent pour vous proposer une démarche sous 48 heures.</p>
+          <div class="actions">
+            <a class="btn btn-wa" href="https://wa.me/237679617770?text=Bonjour%20Emmanuel%2C%20j%27ai%20vu%20votre%20portfolio." target="_blank" rel="noopener"><svg class="ic"><use href="#i-wa"/></svg>Écrire sur WhatsApp</a>
+            <a class="btn btn-plein" href="mailto:emmanuelnoualeu@gmail.com?subject=Projet%20d'analyse%20de%20donn%C3%A9es"><svg class="ic"><use href="#i-mail"/></svg>Écrire un e-mail</a>
+          </div>
+        </div>
+        <div class="fiche">
+          <div class="champ"><span class="g"><svg class="ic"><use href="#i-wa"/></svg><span><small>WhatsApp</small><a href="https://wa.me/237679617770">+237 679 617 770</a></span></span><button class="copier" type="button" data-copie="+237679617770">Copier</button></div>
+          <div class="champ"><span class="g"><svg class="ic"><use href="#i-tel"/></svg><span><small>Téléphone</small><a href="tel:+237696699747">+237 696 699 747</a></span></span><button class="copier" type="button" data-copie="+237696699747">Copier</button></div>
+          <div class="champ"><span class="g"><svg class="ic"><use href="#i-mail"/></svg><span><small>E-mail</small><a href="mailto:emmanuelnoualeu@gmail.com">emmanuelnoualeu@gmail.com</a></span></span><button class="copier" type="button" data-copie="emmanuelnoualeu@gmail.com">Copier</button></div>
+          <div class="champ"><span class="g"><svg class="ic"><use href="#i-in"/></svg><span><small>LinkedIn</small><a href="https://www.linkedin.com/in/emmanuel-noualeu-b78bba24b/">emmanuel-noualeu</a></span></span></div>
+          <div class="champ"><span class="g"><svg class="ic"><use href="#i-ext"/></svg><span><small>Upwork</small><a href="https://www.upwork.com/freelancers/~0146b1a5dfeefdd395">Profil freelance</a></span></span></div>
+          <div class="champ"><span class="g"><svg class="ic"><use href="#i-gh"/></svg><span><small>GitHub</small><a href="https://github.com/emmanuelnoualeu">emmanuelnoualeu</a></span></span></div>
+          <div class="champ"><span class="g"><svg class="ic"><use href="#i-dl"/></svg><span><small>CV</small><a href="assets/cv-emmanuel-noualeu.pdf">Analyste de données (PDF, 1 page)</a></span></span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="page">
+    <span>© 2026 Emmanuel Noualeu, analyste de données et ingénieur des mines, Douala. Les études de cas utilisent des données publiques, sauf « 30 forages », dont les données réelles sont confidentielles.</span>
+    <a href="#haut">Retour en haut</a>
+  </div>
+</footer>
+
+<a class="btn btn-wa wa-flottant cache" href="https://wa.me/237679617770?text=Bonjour%20Emmanuel%2C%20j%27ai%20vu%20votre%20portfolio." target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp"><svg class="ic"><use href="#i-wa"/></svg><span>WhatsApp</span></a>
+
+<script>
+  (function () {
+    var boutons = document.querySelectorAll(".filtres button");
+    var projets = document.querySelectorAll(".projet");
+    boutons.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var f = b.getAttribute("data-f");
+        boutons.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        projets.forEach(function (p) {
+          p.hidden = !(f === "tous" || p.getAttribute("data-t").split(" ").indexOf(f) !== -1);
+        });
+      });
+    });
+    var flottant = document.querySelector(".wa-flottant");
+    var surveiller = function () { flottant.classList.toggle("cache", window.scrollY < 650); };
+    window.addEventListener("scroll", surveiller, { passive: true });
+    surveiller();
+    document.querySelectorAll(".copier").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var t = b.getAttribute("data-copie");
+        var fin = function () { b.textContent = "Copié"; setTimeout(function () { b.textContent = "Copier"; }, 1600); };
+        if (navigator.clipboard) navigator.clipboard.writeText(t).then(fin, function () { b.textContent = t; });
+        else b.textContent = t;
+      });
+    });
+  })();
+</script>
 </body>
 </html>
